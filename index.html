@@ -1,0 +1,1971 @@
+<!DOCTYPE html>
+<html lang="ru" data-lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Определитель хвойных деревьев · Беченча · Саха сирэ</title>
+<meta name="description" content="Интерактивный определитель семи хвойных деревьев окрестностей села Беченча, Ленский район, Республика Саха (Якутия). Русский и якутский языки.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Тайга · определитель хвойных деревьев Беченчи">
+<meta property="og:description" content="Семь хвойных пород, два ключа, два языка. Интерактивный определитель для окрестностей села Беченча.">
+<meta name="theme-color" content="#0d2a22">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 46'%3E%3Crect width='40' height='46' fill='%230d2a22'/%3E%3Cpath d='M20 5 9 20h5L6 32h7L5 42h30L25 32h7l-8-12h5L20 5Z' fill='%23e6b968'/%3E%3C/svg%3E">
+<style>/* ============ Тайга · определитель деревьев Беченчи ============ */
+:root{
+  --paper:#f3eee1;
+  --paper-2:#eae2cf;
+  --card:#fffdf8;
+  --ink:#1b2a22;
+  --muted:#5f6d60;
+  --forest:#0d2a22;
+  --forest-2:#143c30;
+  --forest-3:#1d5142;
+  --moss:#5f7f52;
+  --gold:#c58a2a;
+  --gold-2:#e6b968;
+  --berry:#46688f;
+  --rust:#a24f31;
+  --line:rgba(27,42,34,.14);
+  --line-2:rgba(27,42,34,.08);
+  --shadow:0 22px 48px -28px rgba(13,42,34,.55);
+  --shadow-sm:0 10px 24px -16px rgba(13,42,34,.45);
+  --radius:20px;
+  --font-display:"Palatino Linotype","Book Antiqua",Georgia,"Times New Roman",serif;
+  --font-body:"Segoe UI","Inter",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:92px}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--font-body);font-size:17px;line-height:1.62;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+body.is-locked{overflow:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;line-height:1.12;margin:0;letter-spacing:-.01em}
+p{margin:0}
+::selection{background:var(--gold-2);color:var(--forest)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+
+/* язык */
+.sah{display:none}
+body[data-lang="sah"] .ru{display:none}
+body[data-lang="sah"] .sah{display:inline}
+
+.wrap{width:min(1180px,100% - 48px);margin-inline:auto}
+.skip{position:absolute;left:-9999px;top:12px;background:var(--gold);color:var(--forest);padding:10px 18px;border-radius:8px;z-index:200}
+.skip:focus{left:12px}
+
+/* ---------- шапка ---------- */
+.topbar{
+  position:fixed;inset:0 0 auto 0;z-index:90;
+  display:flex;align-items:center;gap:24px;
+  padding:18px 0;color:#fff;
+  transition:background .35s ease,box-shadow .35s ease,padding .35s ease;
+}
+.topbar .wrap{display:flex;align-items:center;gap:28px}
+.topbar.is-stuck{
+  background:rgba(244,239,227,.94);backdrop-filter:blur(14px);
+  color:var(--ink);box-shadow:0 1px 0 rgba(27,42,34,.12),0 12px 30px -24px rgba(13,42,34,.5);
+  padding:10px 0;
+}
+.brand{display:flex;align-items:center;gap:12px;flex:none}
+.brand__mark{width:38px;height:42px;flex:none;color:var(--gold-2)}
+.topbar.is-stuck .brand__mark{color:var(--forest-2)}
+.topbar.is-stuck .brand__name,.topbar.is-stuck .brand__sub,.topbar.is-stuck .nav a{color:var(--ink)}
+.brand__text{display:flex;flex-direction:column;line-height:1.05}
+.brand__name{font-family:var(--font-display);font-size:23px;letter-spacing:.14em;text-transform:uppercase}
+.brand__sub{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.7;margin-top:3px}
+.nav{display:flex;gap:6px;margin-left:auto}
+.nav a{
+  font-size:14.5px;letter-spacing:.01em;padding:9px 12px;border-radius:999px;
+  opacity:.9;transition:background .2s,opacity .2s;white-space:nowrap;
+}
+.nav a:hover{background:rgba(255,255,255,.14);opacity:1}
+.topbar.is-stuck .nav a:hover{background:rgba(13,42,34,.08)}
+.lang{
+  display:flex;padding:4px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);
+  flex:none;
+}
+.topbar.is-stuck .lang{border-color:var(--line);background:rgba(13,42,34,.05)}
+.lang button{
+  border:0;background:transparent;color:inherit;border-radius:999px;
+  padding:6px 13px;font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  opacity:.75;transition:background .2s,opacity .2s;
+}
+.lang button[aria-pressed="true"]{background:var(--gold);color:var(--forest);opacity:1}
+.lang__short{display:inline}
+.lang__full{display:none}
+@media(min-width:1180px){.lang__short{display:none}.lang__full{display:inline}}
+.burger{display:none;margin-left:auto;background:none;border:0;padding:8px;color:inherit}
+.burger span{display:block;width:24px;height:2px;background:currentColor;margin:5px 0;border-radius:2px;transition:.25s}
+body.menu-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+body.menu-open .burger span:nth-child(2){opacity:0}
+body.menu-open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;min-height:min(92vh,780px);display:flex;align-items:flex-end;
+  color:#fff;overflow:hidden;background:var(--forest);
+}
+.hero__bg{position:absolute;inset:0;background:url("assets/img/hero.jpg") center 42%/cover no-repeat;transform:scale(1.02)}
+.hero::before{
+  content:"";position:absolute;inset:0;z-index:1;
+  background:
+    linear-gradient(180deg,rgba(8,26,21,.72) 0%,rgba(8,26,21,.18) 32%,rgba(8,26,21,.05) 55%,rgba(8,26,21,.82) 100%),
+    linear-gradient(90deg,rgba(8,26,21,.72) 0%,rgba(8,26,21,.28) 46%,rgba(8,26,21,0) 72%);
+}
+.hero::after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(120% 80% at 80% 20%,rgba(197,138,42,.16),transparent 60%);
+}
+.hero__inner{position:relative;z-index:2;padding:150px 0 64px;width:min(1180px,100% - 48px);margin-inline:auto}
+.hero__overline{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-2);
+  margin-bottom:22px;
+}
+.hero__overline::before{content:"";width:42px;height:1px;background:currentColor;opacity:.8}
+.hero h1{font-size:clamp(40px,6.2vw,82px);line-height:1.02;max-width:16ch;text-wrap:balance;text-shadow:0 2px 40px rgba(8,26,21,.35)}
+.hero__text{max-width:52ch;margin-top:24px;font-size:clamp(16px,1.35vw,19px);color:rgba(255,255,255,.86)}
+.hero__actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px;align-items:center}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;border:0;border-radius:999px;
+  padding:16px 26px;font-weight:600;font-size:15.5px;letter-spacing:.01em;
+  transition:transform .2s ease,box-shadow .2s ease,background .2s ease;
+}
+.btn--gold{background:var(--gold);color:#20160a;box-shadow:0 16px 30px -18px rgba(197,138,42,.9)}
+.btn--gold:hover{transform:translateY(-2px);background:var(--gold-2)}
+.btn--ghost{border:1px solid rgba(255,255,255,.4);color:#fff;background:rgba(255,255,255,.06)}
+.btn--ghost:hover{background:rgba(255,255,255,.14)}
+.btn--dark{background:var(--forest);color:#fff}
+.btn--dark:hover{background:var(--forest-3)}
+.btn svg{width:18px;height:18px;flex:none}
+.hero__meta{
+  display:flex;gap:34px;margin-top:46px;padding-top:26px;
+  border-top:1px solid rgba(255,255,255,.2);max-width:640px;flex-wrap:wrap;
+}
+.hero__meta div{display:flex;flex-direction:column;gap:2px}
+.hero__meta b{font-family:var(--font-display);font-size:27px;font-weight:600;color:#fff}
+.hero__meta span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.62)}
+.hero__scroll{
+  position:absolute;right:max(24px,calc((100vw - 1180px)/2));bottom:56px;z-index:2;
+  writing-mode:vertical-rl;font-size:11px;letter-spacing:.26em;text-transform:uppercase;
+  color:rgba(255,255,255,.6);display:flex;align-items:center;gap:14px;
+}
+.hero__scroll::after{content:"";width:1px;height:56px;background:linear-gradient(rgba(255,255,255,.7),transparent)}
+
+/* ---------- полоса фактов ---------- */
+.strip{background:var(--forest);color:#e9e3d2;padding:0 0 8px}
+.strip__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.12);border-radius:18px;overflow:hidden;transform:translateY(-1px)}
+.strip__item{background:var(--forest);padding:26px 28px;display:flex;gap:16px;align-items:flex-start}
+.strip__item svg{width:30px;height:30px;color:var(--gold-2);flex:none;margin-top:2px}
+.strip__item b{display:block;font-size:15.5px;color:#fff;margin-bottom:4px;font-weight:600}
+.strip__item span{font-size:14px;color:rgba(233,227,210,.7);line-height:1.45}
+
+/* ---------- секции ---------- */
+.section{padding:96px 0}
+.section--tight{padding:72px 0}
+.sec-head{max-width:760px;margin-bottom:46px}
+.overline{
+  display:inline-flex;align-items:center;gap:10px;font-size:11.5px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:700;
+}
+.overline::before{content:"";width:30px;height:1px;background:currentColor}
+.sec-head h2{font-size:clamp(30px,4vw,50px);text-wrap:balance}
+.sec-head p{margin-top:16px;color:var(--muted);max-width:62ch;font-size:17px}
+.section--dark{background:var(--forest);color:#efe9d8;position:relative;overflow:hidden}
+.section--dark .sec-head h2{color:#fff}
+.section--dark .sec-head p{color:rgba(239,233,216,.68)}
+.section--dark .overline{color:var(--gold-2)}
+
+/* ---------- ключ ---------- */
+.key{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:34px;align-items:start}
+.key__card{
+  background:var(--card);color:var(--ink);border-radius:26px;padding:36px 38px 30px;
+  box-shadow:0 40px 80px -40px rgba(0,0,0,.55);position:relative;overflow:hidden;
+}
+.key__card::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,var(--gold),var(--gold-2),#8aa06a)}
+.key__tabs{display:flex;gap:6px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:5px;margin-bottom:22px;width:fit-content;max-width:100%;flex-wrap:wrap}
+.key__tab{border:0;background:transparent;border-radius:999px;padding:9px 16px;font-size:13.5px;font-weight:600;color:var(--muted);transition:background .2s,color .2s;line-height:1.2}
+.key__tab:hover{color:var(--forest)}
+.key__tab.is-active{background:var(--forest);color:#fff}
+.key__top{display:flex;align-items:center;gap:14px;margin-bottom:26px;flex-wrap:wrap}
+.key__badge{
+  display:inline-flex;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--line);
+  border-radius:999px;padding:7px 14px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--forest-2);
+}
+.key__badge i{width:7px;height:7px;border-radius:50%;background:var(--gold);display:block}
+.key__trail{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto;max-width:60%}
+.key__trail span{font-size:12px;color:var(--muted);background:rgba(13,42,34,.06);padding:5px 10px;border-radius:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
+.key__step{display:none;animation:fade .35s ease}
+.key__step.is-active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.key__q{font-size:clamp(23px,2.5vw,31px);line-height:1.18;margin-bottom:8px;min-height:2.2em}
+.key__sub{color:var(--muted);font-size:14.5px;margin-bottom:22px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{
+  display:flex;align-items:center;gap:18px;text-align:left;width:100%;
+  background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px 18px;
+  transition:border-color .18s,transform .18s,box-shadow .18s,background .18s;
+}
+.opt:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow-sm);background:#fffdf3}
+.opt__ico{
+  width:62px;height:62px;flex:none;border-radius:14px;background:var(--paper);
+  display:grid;place-items:center;color:var(--forest-2);border:1px solid var(--line-2);
+}
+.opt__ico svg{width:46px;height:46px}
+.opt__txt{display:flex;flex-direction:column;gap:3px;min-width:0}
+.opt__txt b{font-weight:600;font-size:16px;line-height:1.3}
+.opt__txt span{font-size:13px;color:var(--muted)}
+.opt__arrow{margin-left:auto;flex:none;width:34px;height:34px;border-radius:50%;background:var(--paper);display:grid;place-items:center;transition:.2s}
+.opt:hover .opt__arrow{background:var(--gold);color:#20160a}
+.key__nav{display:flex;gap:10px;margin-top:24px;padding-top:20px;border-top:1px dashed var(--line)}
+.key__nav button{
+  display:inline-flex;align-items:center;gap:8px;background:none;border:0;padding:8px 4px;
+  font-size:14px;color:var(--muted);font-weight:600;
+}
+.key__nav button:hover{color:var(--forest)}
+.key__nav button[disabled]{opacity:.35;pointer-events:none}
+.key__nav .key__reset{margin-left:auto}
+.key__side{position:relative;padding-top:8px}
+.key__side h3{font-size:26px;color:#fff;margin-bottom:18px}
+.key__side p{color:rgba(239,233,216,.66);font-size:15px}
+.key__legend{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-direction:column;gap:14px}
+.key__legend li{display:flex;gap:14px;align-items:flex-start;color:rgba(239,233,216,.82);font-size:14.5px}
+.key__legend b{display:grid;place-items:center;width:30px;height:30px;flex:none;border-radius:50%;border:1px solid rgba(230,185,104,.5);color:var(--gold-2);font-size:12.5px;font-weight:700}
+.key__note{margin-top:30px;padding:18px 20px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);font-size:13.5px;color:rgba(239,233,216,.7)}
+
+/* результат */
+.result{display:grid;grid-template-columns:220px minmax(0,1fr);gap:22px;align-items:center;background:var(--paper);border:1px solid var(--line-2);border-radius:18px;padding:18px}
+.key__step[data-kind="result"] .key__q{font-family:var(--font-body);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:14px}
+.result__img{aspect-ratio:4/3;border-radius:14px;overflow:hidden;background:var(--paper-2)}
+.result__img img{width:100%;height:100%;object-fit:cover}
+.result__body h3{font-size:29px;line-height:1.06;margin-bottom:4px}
+.result__sah{color:var(--forest-3);font-size:16px;font-weight:600;margin-bottom:2px}
+.result__lat{font-style:italic;color:var(--muted);font-size:13.5px;margin-bottom:12px}
+.result__facts{display:flex;flex-direction:column;gap:7px;margin-bottom:16px;font-size:13.5px}
+.result__facts div{display:flex;gap:8px}
+.result__facts dt{color:var(--muted);flex:none;width:66px}
+.result__facts dd{margin:0;font-weight:500}
+.result .btn{padding:12px 18px;font-size:14px}
+
+/* ---------- карточки ---------- */
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+.card{
+  position:relative;display:flex;flex-direction:column;background:var(--card);
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+  transition:transform .25s ease,box-shadow .25s ease,border-color .25s;
+}
+.card:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:rgba(197,138,42,.55)}
+.card__media{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--paper-2)}
+.card__media img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.6,.2,1)}
+.card:hover .card__media img{transform:scale(1.045)}
+.card__num{
+  position:absolute;top:12px;left:12px;background:rgba(13,42,34,.82);color:#fff;
+  font-size:11.5px;letter-spacing:.14em;padding:5px 9px;border-radius:6px;font-weight:700;backdrop-filter:blur(4px);
+}
+.card__rb{
+  position:absolute;top:12px;right:12px;background:rgba(162,79,49,.92);color:#fff;
+  font-size:10px;letter-spacing:.08em;padding:5px 8px;border-radius:6px;font-weight:700;text-transform:uppercase;
+}
+.card__body{padding:18px 18px 20px;display:flex;flex-direction:column;flex:1}
+.card__ru{font-family:var(--font-display);font-size:22px;line-height:1.1;letter-spacing:-.01em}
+.card__sah{color:var(--forest-3);font-size:14px;font-weight:600;margin-top:4px}
+.card__lat{font-style:italic;font-size:12.5px;color:var(--muted);margin-top:2px}
+.card__short{font-size:13.5px;color:var(--muted);line-height:1.45;margin-top:12px}
+.card__tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:16px}
+.card__tags span{font-size:11px;letter-spacing:.02em;background:var(--paper);border:1px solid var(--line-2);border-radius:999px;padding:4px 9px;color:var(--forest-2)}
+.card__go{
+  position:absolute;right:16px;bottom:16px;width:36px;height:36px;border-radius:50%;
+  background:var(--forest);color:#fff;display:grid;place-items:center;
+  opacity:0;transform:translateX(-6px);transition:.25s;
+}
+.card:hover .card__go{opacity:1;transform:none}
+.card--wide{grid-column:span 2;flex-direction:row}
+.card--wide .card__media{aspect-ratio:auto;width:52%;flex:none}
+.card--wide .card__body{justify-content:center;padding:26px}
+.card--wide .card__ru{font-size:29px}
+.card--wide .card__short{font-size:14.5px}
+@media(min-width:1101px){
+  .card--span2{grid-column:span 2}
+  .card--span2 .card__media{aspect-ratio:16/9}
+}
+
+/* ---------- модальное окно ---------- */
+.modal{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:24px}
+.modal[hidden]{display:none}
+.modal__backdrop{position:absolute;inset:0;background:rgba(8,25,20,.62);backdrop-filter:blur(6px);opacity:0;transition:opacity .25s}
+.modal.is-open .modal__backdrop{opacity:1}
+.modal__panel{
+  position:relative;background:var(--card);border-radius:26px;width:min(1080px,100%);
+  max-height:calc(100vh - 48px);overflow:auto;box-shadow:0 50px 100px -30px rgba(0,0,0,.6);
+  opacity:0;transform:translateY(16px) scale(.985);transition:opacity .28s,transform .28s;
+}
+.modal.is-open .modal__panel{opacity:1;transform:none}
+.modal__panel:focus{outline:none}
+.modal__close{
+  position:sticky;top:14px;margin-left:calc(100% - 58px);z-index:5;
+  width:44px;height:44px;border-radius:50%;border:0;background:rgba(13,42,34,.9);color:#fff;
+  display:grid;place-items:center;font-size:20px;line-height:1;
+}
+.modal__close:hover{background:var(--rust)}
+.modal__grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:0;margin-top:-44px}
+.gallery{padding:0 0 30px 30px;position:sticky;top:0;align-self:start}
+.gallery__main{aspect-ratio:4/3;border-radius:18px;overflow:hidden;background:var(--paper-2)}
+.gallery__main img{width:100%;height:100%;object-fit:cover;object-position:center 38%}
+.gallery__thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.gallery__thumbs button{padding:0;border:2px solid transparent;border-radius:10px;overflow:hidden;background:none;aspect-ratio:4/3}
+.gallery__thumbs button.is-active{border-color:var(--gold)}
+.gallery__thumbs img{width:100%;height:100%;object-fit:cover}
+.gallery__cap{font-size:12px;color:var(--muted);margin-top:10px;min-height:2.8em}
+.gallery__credit{font-size:10.5px;color:rgba(95,109,96,.75);margin-top:2px;line-height:1.35}
+.modal__content{padding:44px 40px 40px 34px}
+.modal__kicker{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px}
+.modal__content h2{font-size:clamp(30px,4vw,44px);line-height:1.02}
+.modal__names{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:baseline;margin-top:8px}
+.modal__sah{font-size:19px;color:var(--forest-3);font-weight:600}
+.modal__lat{font-style:italic;color:var(--muted);font-size:14px}
+.modal__alt{font-size:12.5px;color:var(--muted);margin-top:8px}
+.modal__desc{margin-top:18px;font-size:15.5px;line-height:1.6}
+.feats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:22px 0 0}
+.feat{background:var(--paper);border-radius:12px;padding:12px 14px;border:1px solid var(--line-2)}
+.feat dt{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.feat dt svg{width:13px;height:13px;color:var(--gold)}
+.feat dd{margin:0;font-size:13.5px;line-height:1.4}
+.notes{margin-top:22px;display:flex;flex-direction:column;gap:16px}
+.note h4{font-family:var(--font-body);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--forest-3);margin-bottom:5px;font-weight:700}
+.note p{font-size:14px;color:#3d4b40;line-height:1.5}
+.fact{
+  margin-top:22px;background:linear-gradient(135deg,rgba(197,138,42,.12),rgba(197,138,42,.04));
+  border-left:3px solid var(--gold);border-radius:0 12px 12px 0;padding:14px 18px;
+}
+.fact h4{font-family:var(--font-body);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;font-weight:700}
+.fact p{font-size:14px;line-height:1.5}
+.badge-rb{display:inline-flex;align-items:center;gap:8px;background:rgba(162,79,49,.1);color:var(--rust);border:1px solid rgba(162,79,49,.25);border-radius:999px;padding:6px 13px;font-size:11.5px;font-weight:600;margin-top:14px;line-height:1.35}
+.badge-rb svg{width:14px;height:14px;flex:none}
+
+/* ---------- где искать ---------- */
+.zones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.zone{
+  position:relative;display:block;aspect-ratio:4/3;border-radius:20px;overflow:hidden;
+  color:#fff;background:var(--forest);box-shadow:var(--shadow-sm);
+  transition:transform .3s ease,box-shadow .3s ease;
+}
+.zone:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.zone img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.6,.2,1)}
+.zone:hover img{transform:scale(1.05)}
+.zone::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(8,25,20,.05) 30%,rgba(8,25,20,.55) 68%,rgba(8,25,20,.88) 100%);
+}
+.zone__body{position:absolute;inset:auto 0 0 0;padding:20px 22px;z-index:2}
+.zone__num{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-2);font-weight:700;display:block;margin-bottom:6px}
+.zone h3{font-size:23px;color:#fff;line-height:1.1;text-wrap:balance}
+.zone__chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.zone__chips span{
+  font-size:11.5px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
+  backdrop-filter:blur(3px);border-radius:999px;padding:4px 9px;line-height:1.3;
+}
+.zone__arrow{
+  position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;
+  background:rgba(255,255,255,.14);display:grid;place-items:center;z-index:2;
+  opacity:0;transform:translate(-4px,4px);transition:.25s;
+}
+.zone:hover .zone__arrow{opacity:1;transform:none}
+.where-note{margin-top:20px;font-size:14px;color:var(--muted);display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.where-note b{color:var(--forest-2);font-weight:600}
+
+/* ---------- зимняя галерея ---------- */
+.winter-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.wphoto{position:relative;display:block;aspect-ratio:3/4;border-radius:16px;overflow:hidden;color:#fff;background:var(--forest);box-shadow:var(--shadow-sm);transition:transform .3s,box-shadow .3s}
+.wphoto:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.wphoto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.6,.2,1)}
+.wphoto:hover img{transform:scale(1.045)}
+.wphoto::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(6,20,16,.78) 100%)}
+.wphoto__cap{position:absolute;left:14px;right:14px;bottom:42px;z-index:2;font-size:14px;font-weight:600;line-height:1.25;text-shadow:0 1px 10px rgba(0,0,0,.4)}
+.wphoto__tag{position:absolute;left:14px;bottom:12px;z-index:2;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(4px);border-radius:999px;padding:4px 9px}
+
+/* ---------- таблица ---------- */
+.tablewrap{overflow-x:auto;border-radius:18px;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow-sm)}
+table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:13.5px}
+table.cmp th{
+  text-align:left;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  padding:16px 16px;background:var(--paper);border-bottom:1px solid var(--line);position:sticky;top:0;
+}
+table.cmp td{padding:14px 16px;border-bottom:1px solid var(--line-2);vertical-align:top;line-height:1.45}
+table.cmp td:last-child{white-space:nowrap}
+table.cmp tr:last-child td{border-bottom:0}
+table.cmp tbody tr:hover{background:rgba(197,138,42,.06)}
+.cmp__sp{display:flex;align-items:center;gap:10px;min-width:190px}
+.cmp__sp img{width:48px;height:48px;border-radius:8px;object-fit:cover;flex:none}
+.cmp__sp b{display:block;font-size:13.5px;line-height:1.2}
+.cmp__sp span{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}
+.cmp__lat{font-style:italic;color:var(--muted);font-size:11.5px}
+
+/* ---------- викторина ---------- */
+.quiz{background:var(--card);border:1px solid var(--line);border-radius:26px;overflow:hidden;box-shadow:var(--shadow-sm)}
+.quiz__grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
+.quiz__media{position:relative;min-height:380px;background:var(--paper-2)}
+.quiz__media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.quiz__score{
+  position:absolute;top:16px;left:16px;background:rgba(13,42,34,.86);color:#fff;border-radius:999px;
+  padding:7px 14px;font-size:12px;letter-spacing:.06em;backdrop-filter:blur(4px);
+}
+.quiz__body{padding:34px 34px 30px;display:flex;flex-direction:column}
+.quiz__q{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+.quiz__title{font-size:26px;line-height:1.15;margin-bottom:20px}
+.quiz__opts{display:grid;gap:9px}
+.quiz__opt{
+  text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:12px;
+  padding:13px 16px;font-size:14.5px;transition:.18s;display:flex;align-items:center;gap:10px;
+}
+.quiz__opt:hover{border-color:var(--gold);background:#fffdf3}
+.quiz__opt.is-right{background:#e6f0df;border-color:#7fa06a;color:#25401d;font-weight:600}
+.quiz__opt.is-wrong{background:#f5e3dc;border-color:#c88a72;color:#6b2f1c}
+.quiz__opt[disabled]{cursor:default}
+.quiz__feedback{margin-top:16px;font-size:14px;min-height:3.2em}
+.quiz__feedback b{color:var(--forest-3)}
+.quiz__foot{margin-top:auto;padding-top:18px;display:flex;align-items:center;gap:12px}
+.quiz__progress{display:flex;gap:5px;margin-left:auto}
+.quiz__progress i{width:18px;height:4px;border-radius:2px;background:rgba(13,42,34,.14)}
+.quiz__progress i.on{background:var(--gold)}
+.quiz__progress i.ok{background:var(--moss)}
+
+/* ---------- о проекте / интро ---------- */
+.intro{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:44px;align-items:center}
+.intro__fig{margin:0;position:relative;border-radius:20px;overflow:hidden;box-shadow:var(--shadow-sm);background:var(--paper-2)}
+.intro__fig img{width:100%;aspect-ratio:4/3;object-fit:cover;object-position:center 38%}
+.intro__fig figcaption{position:absolute;inset:auto 0 0 0;padding:26px 18px 12px;color:#fff;font-size:12.5px;background:linear-gradient(transparent,rgba(8,25,20,.75))}
+.about{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:56px;align-items:start}
+.about__text p{color:var(--muted);margin-top:16px;font-size:15.5px}
+.about__names{margin-top:20px;background:var(--paper);border-left:3px solid var(--gold);padding:16px 20px;border-radius:0 12px 12px 0;font-size:14px;color:var(--muted)}
+.src{list-style:none;margin:14px 0 0;padding:0;counter-reset:src}
+.src li{counter-increment:src;padding:11px 0 11px 34px;border-bottom:1px dashed var(--line);font-size:13.5px;position:relative;color:var(--muted)}
+.src li::before{content:counter(src,decimal-leading-zero);position:absolute;left:0;top:12px;font-size:10.5px;letter-spacing:.08em;color:var(--gold);font-weight:700}
+.src a{border-bottom:1px solid rgba(197,138,42,.5);color:var(--forest-2)}
+.src a:hover{color:var(--gold)}
+.credits{font-size:11.5px;color:rgba(95,109,96,.85);line-height:1.5;margin-top:18px}
+
+/* ---------- подвал ---------- */
+.footer{background:var(--forest);color:rgba(239,233,216,.72);padding:56px 0 34px;font-size:13.5px}
+.footer__grid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;align-items:flex-start}
+.footer__brand{display:flex;align-items:center;gap:12px;color:#fff}
+.footer__brand svg{width:34px;height:38px;color:var(--gold-2)}
+.footer__brand b{font-family:var(--font-display);font-size:20px;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.footer p{max-width:52ch;margin-top:14px;line-height:1.55}
+.footer__meta{text-align:right;display:flex;flex-direction:column;gap:6px}
+.footer__meta a{border-bottom:1px solid rgba(230,185,104,.35);align-self:flex-end}
+.footer__meta a:hover{color:var(--gold-2)}
+.footer__bottom{margin-top:36px;padding-top:18px;border-top:1px solid rgba(255,255,255,.12);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:12px;color:rgba(239,233,216,.5)}
+
+/* ---------- адаптив ---------- */
+@media(max-width:1100px){
+  .cards{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .key{grid-template-columns:1fr}
+  .key__side{display:grid;grid-template-columns:1fr 1fr;gap:18px 34px;padding-top:0}
+  .key__side > div:first-child{display:none}
+  .key__side h3{margin-bottom:6px}
+  .key__legend{margin-top:0}
+  .key__note{margin-top:0}
+  .modal__grid{grid-template-columns:1fr;margin-top:0}
+  .gallery{position:static;padding:0 26px 0}
+  .modal__content{padding:26px 26px 34px}
+  .modal__close{margin:12px 14px 0 auto}
+  .zones{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .winter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .intro{grid-template-columns:1fr;gap:26px}
+  .intro__fig{order:-1}
+  .about{grid-template-columns:1fr;gap:34px}
+  .quiz__grid{grid-template-columns:1fr}
+  .quiz__media{min-height:300px}
+}
+@media(max-width:860px){
+  .nav{
+    position:fixed;inset:0 0 auto 0;padding:92px 24px 28px;flex-direction:column;gap:4px;
+    background:var(--forest);color:#fff;transform:translateY(-110%);transition:transform .35s ease;
+    box-shadow:0 30px 50px -20px rgba(0,0,0,.5);z-index:-1;
+  }
+  body.menu-open .nav{transform:none}
+  .nav a{padding:14px 12px;font-size:17px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .burger{display:block;margin-left:0}
+  .lang{margin-left:auto}
+  .brand__sub{display:none}
+  .topbar .wrap{gap:14px}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .card--wide{grid-column:span 2;flex-direction:column}
+  .card--wide .card__media{width:100%;aspect-ratio:16/9}
+  .strip__grid{grid-template-columns:1fr}
+  .hero__meta{gap:22px}
+  .section{padding:68px 0}
+  .result{grid-template-columns:1fr}
+  .result__img{aspect-ratio:16/9}
+}
+@media(max-width:600px){
+  body{font-size:16px}
+  .wrap{width:calc(100% - 32px)}
+  .hero__inner{width:calc(100% - 32px);padding:130px 0 48px}
+  .hero{min-height:600px}
+  .hero__scroll{display:none}
+  .hero__meta{padding-top:20px;margin-top:32px}
+  .hero__meta b{font-size:22px}
+  .cards{grid-template-columns:1fr}
+  .card--wide{grid-column:span 1}
+  .zones{grid-template-columns:1fr}
+  .winter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gallery__thumbs{grid-template-columns:repeat(3,1fr)}
+  .key__card{padding:24px 20px 20px;border-radius:20px}
+  .key__trail{display:none}
+  .opt{padding:12px;gap:12px}
+  .opt__ico{width:52px;height:52px}
+  .opt__ico svg{width:38px;height:38px}
+  .key__side{grid-template-columns:1fr}
+  .modal{padding:0}
+  .modal__panel{max-height:100vh;border-radius:0;width:100%}
+  .modal__grid{grid-template-columns:1fr}
+  .gallery{padding:0 16px}
+  .modal__content{padding:22px 20px 40px}
+  .feats{grid-template-columns:1fr}
+  .quiz__body{padding:24px 20px}
+  .quiz__media{min-height:230px}
+  .footer__meta{text-align:left}
+  .footer__meta a{align-self:flex-start}
+  .section{padding:56px 0}
+  .sec-head{margin-bottom:30px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
+@media print{
+  .topbar,.hero__actions,.key__nav,.quiz,.footer,.modal,.hero__scroll{display:none!important}
+  body{background:#fff}
+  .section{padding:18px 0}
+  .card{break-inside:avoid;box-shadow:none}
+  .cards{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body data-lang="ru">
+<a class="skip" href="#key">К содержанию</a>
+
+<header class="topbar" id="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Тайга — на главную">
+      <svg class="brand__mark" viewBox="0 0 40 46" fill="none" aria-hidden="true">
+        <path d="M20 2 8 18h6L6 30h8L4 43h32l-10-13h8l-8-12h6L20 2Z" fill="currentColor" opacity=".92"/>
+        <path d="M20 43v-6" stroke="currentColor" stroke-width="2.4"/>
+      </svg>
+      <span class="brand__text">
+        <span class="brand__name">Тайга</span>
+        <span class="brand__sub"><span class="ru">определитель деревьев</span><span class="sah">мастар быһаарыылара</span></span>
+      </span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Основная навигация">
+      <a href="#key"><span class="ru">Определитель</span><span class="sah">Быһаарыы</span></a>
+      <a href="#species"><span class="ru">Виды</span><span class="sah">Көрүҥнэр</span></a>
+      <a href="#where"><span class="ru">Где искать</span><span class="sah">Ханна көрдүөххэ</span></a>
+      <a href="#table"><span class="ru">Сравнение</span><span class="sah">Тэҥнээһин</span></a>
+      <a href="#about"><span class="ru">О проекте</span><span class="sah">Бу туһунан</span></a>
+    </nav>
+    <div class="lang" role="group" aria-label="Язык">
+      <button type="button" data-lang="ru" aria-pressed="true"><span class="lang__short">RU</span><span class="lang__full">Русский</span></button>
+      <button type="button" data-lang="sah" aria-pressed="false"><span class="lang__short">САХ</span><span class="lang__full">Сахалыы</span></button>
+    </div>
+    <button class="burger" id="burger" aria-label="Меню" aria-expanded="false" aria-controls="nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero__bg" role="img" aria-label="Лиственница на берегу реки"></div>
+  <div class="hero__inner">
+    <div class="hero__overline"><span class="ru">Полевой определитель · Ленский район · Саха сирэ</span><span class="sah">Хонуу определителе · Ленск улууһа · Саха сирэ</span></div>
+    <h1><span class="ru">Узнай дерево якутской тайги</span><span class="sah">Саха тайҕатын маһын бил</span></h1>
+    <p class="hero__text"><span class="ru">Семь хвойных пород, которые растут в окрестностях села Беченча. Два ключа — по хвое и по шишкам с корой. По-русски и по-якутски.</span><span class="sah">Беченча эргин үүнэр сэттэ иннэлээх мас. Икки күлүүс — иннэнэн уонна туораҕынан, хатырыгынан. Нууччалыы уонна сахалыы.</span></p>
+    <div class="hero__actions">
+      <a class="btn btn--gold" href="#key">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg>
+        <span class="ru">Начать определение</span><span class="sah">Быһаарыыны саҕалаа</span>
+      </a>
+      <a class="btn btn--ghost" href="#species"><span class="ru">Смотреть виды</span><span class="sah">Көрүҥнэри көр</span></a>
+    </div>
+    <div class="hero__meta">
+      <div><b>7</b><span><span class="ru">видов</span><span class="sah">көрүҥ</span></span></div>
+      <div><b>2</b><span><span class="ru">языка</span><span class="sah">тыл</span></span></div>
+      <div><b>5</b><span><span class="ru">ключа</span><span class="sah">күлүүс</span></span></div>
+    </div>
+  </div>
+  <div class="hero__scroll">Беченча · Нюя</div>
+</section>
+<section class="strip"><div class="wrap"><div class="strip__grid"><div class="strip__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4C7 2.5 4 2.6 3 3v13c1.2-.5 4-.6 7 1 3-1.6 5.8-1.5 7-1V3c-1-.4-4-.5-7 1Z"/><path d="M10 4v13"/></svg><div><b><span class="ru">Научные названия</span><span class="sah">Наука ааттара</span></b><span><span class="ru">Латинские имена и семейства — рядом с русскими.</span><span class="sah">Латыын уонна саха ааттара — нууччалыын тэҥҥэ.</span></span></div></div><div class="strip__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18s6-5.5 6-10a6 6 0 1 0-12 0c0 4.5 6 10 6 10Z"/><circle cx="10" cy="8" r="2"/></svg><div><b><span class="ru">Местные признаки</span><span class="sah">Олохтоох бэлиэлэр</span></b><span><span class="ru">Где искать каждый вид в окрестностях Беченчи.</span><span class="sah">Хас көрүҥ Беченча эргиниттэн ханна үүнэрий.</span></span></div></div><div class="strip__item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 10s3-5 8-5 8 5 8 5-3 5-8 5-8-5-8-5Z"/><circle cx="10" cy="10" r="2.2"/></svg><div><b><span class="ru">Проверка себя</span><span class="sah">Бэйэни бэрэбиэркэлээһин</span></b><span><span class="ru">Мини-викторина по фотографиям в конце.</span><span class="sah">Бүтэһигэр ойуунан кыра викторина.</span></span></div></div></div></div></section>
+<section class="section section--tight" id="intro"><div class="wrap"><div class="intro">
+          <div class="sec-head" style="margin-bottom:0">
+            <div class="overline"><span class="ru">определитель деревьев</span><span class="sah">мастар быһаарыылара</span></div>
+            <h2><span class="ru">Карманный ключ для прогулки</span><span class="sah">Хонууга илдьэ барар күлүүс</span></h2>
+            <p><span class="ru">Определитель собран для окрестностей села Беченча. Он поможет школьнику, учителю и гостю узнать дерево, не срывая ветку: смотрите на хвою, шишки и кору, сравнивайте с фотографиями.</span><span class="sah">Бу быһаарыы Беченча эргинэ таһаарыллыбыт. Оскуола оҕото, учуутала уонна ыалдьыт маһы билэригэр көмөлөһүөҕэ: иннэҕэ, туорахха, хатырыкка көр, ойуулардыын тэҥнээ.</span></p>
+          </div>
+          <figure class="intro__fig">
+            <img src="assets/img/winter/w03.jpg" alt="Ель в селе зимой" loading="lazy">
+            <figcaption><span class="ru">Беченча зимой. Ель в селе</span><span class="sah">Кыһын Беченчаҕа. Сэлиэннэҕэ харыйа</span></figcaption>
+          </figure>
+        </div></div></section>
+
+<section class="section section--dark" id="key">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="overline"><span class="ru">Определитель</span><span class="sah">Быһаарыы</span></div>
+      <h2><span class="ru">Определитель</span><span class="sah">Быһаарыы</span></h2>
+      <p><span class="ru">Два способа: по хвое — летом, по шишкам и коре — зимой. Выберите ключ и отвечайте на вопросы.</span><span class="sah">Икки ньыма: сайын иннэнэн, кыһын туораҕынан уонна хатырыгынан. Күлүүс тал уонна ыйытыыларга эппиэттээ.</span></p>
+    </div>
+    <div class="key">
+      <div class="key__card" id="keycard">
+        <div class="key__tabs" role="tablist" aria-label="Определитель"><button type="button" class="key__tab is-active" data-flow="needle" role="tab" aria-selected="true"><span class="ru">По хвое</span><span class="sah">Иннэнан</span></button><button type="button" class="key__tab" data-flow="bark" role="tab" aria-selected="false"><span class="ru">По шишкам и коре</span><span class="sah">Туораҕынан уонна хатырыгынан</span></button></div>
+        <div class="key__top">
+          <span class="key__badge"><i></i><span id="keyStepLabel">Шаг 1 / 3</span></span>
+          <div class="key__trail" id="keyTrail"></div>
+        </div>
+        <div class="key__steps">
+<section class="key__step is-active" data-step="start" data-flow="needle" data-depth="1" data-kind="question">
+  <h3 class="key__q"><span class="ru">Какая хвоя у вашего дерева?</span><span class="sah">Эн маһын иннэтэ хайдаҕый?</span></h3>
+  <div class="key__sub"><span class="ru">Начните с хвои</span><span class="sah">Иннэттэн саҕалаа</span></div>
+  <div class="opts"><button class="opt" type="button" data-next="bundles" data-label-ru="Хвоинки собраны в пучки" data-label-sah="Иннэлэр бөлөҕүнэн үүнэллэр">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 56V40"/><path d="M32 42 16 14"/><path d="M32 42V10"/><path d="M32 42 48 14"/><rect x="27" y="36" width="10" height="8" rx="2"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Хвоинки собраны в пучки</span><span class="sah">Иннэлэр бөлөҕүнэн үүнэллэр</span></b><span><span class="ru">по две или по пять</span><span class="sah">иккилии эбэтэр биэстии</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button><button class="opt" type="button" data-next="single" data-label-ru="Хвоинки растут по одной" data-label-sah="Иннэлэр соҕотохтуу үүнэллэр">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 58V8"/><path d="M32 20 22 12"/><path d="M32 28 42 20"/><path d="M32 36 22 28"/><path d="M32 44 42 36"/><path d="M32 52 22 44"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Хвоинки растут по одной</span><span class="sah">Иннэлэр соҕотохтуу үүнэллэр</span></b><span><span class="ru">ель, пихта, лиственница</span><span class="sah">харыйа, ыылаах, тиит</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button><button class="opt" type="button" data-next="juniperus" data-label-ru="Стелющийся кустарник" data-label-sah="Сиргэ сытар ыарҕа">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 46c8-10 20-14 30-10 8 3 12 8 14 14"/><path d="M18 46c4-6 10-8 16-6"/><path d="M30 38c2-6 8-8 14-6"/><path d="M40 34c4-4 9-4 13-1"/><path d="M8 50h48"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Стелющийся кустарник</span><span class="sah">Сиргэ сытар ыарҕа</span></b><span><span class="ru">можжевельник</span><span class="sah">кытыан</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button></div>
+</section>
+<section class="key__step" data-step="bundles" data-flow="needle" data-depth="2" data-kind="question">
+  <h3 class="key__q"><span class="ru">Сколько хвоинок в пучке?</span><span class="sah">Бөлөххө хас иннэ баарый?</span></h3>
+  <div class="key__sub"></div>
+  <div class="opts"><button class="opt" type="button" data-next="pinus-sylvestris" data-label-ru="В пучке две хвоинки, 4–6 см" data-label-sah="Бөлөххө икки иннэ, 4–6 см">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 56V44"/><path d="M31 44 19 12"/><path d="M33 44 45 12"/><ellipse cx="32" cy="45" rx="5" ry="4"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">В пучке две хвоинки, 4–6 см</span><span class="sah">Бөлөххө икки иннэ, 4–6 см</span></b><span><span class="ru">пучок у основания обёрнут плёнкой</span><span class="sah">бөлөх төрдө плёнканан бүрүллэр</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button><button class="opt" type="button" data-next="pinus-sibirica" data-label-ru="В пучке пять хвоинок, 6–13 см" data-label-sah="Бөлөххө биэс иннэ, 6–13 см">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 56V46"/><path d="M32 46 12 18"/><path d="M32 46 22 10"/><path d="M32 46V6"/><path d="M32 46 42 10"/><path d="M32 46 52 18"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">В пучке пять хвоинок, 6–13 см</span><span class="sah">Бөлөххө биэс иннэ, 6–13 см</span></b><span><span class="ru">пучок без плёнки</span><span class="sah">бөлөх плёнката суох</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button></div>
+</section>
+<section class="key__step" data-step="single" data-flow="needle" data-depth="2" data-kind="question">
+  <h3 class="key__q"><span class="ru">Куда смотрят шишки?</span><span class="sah">Туорахтар ханна тураллар?</span></h3>
+  <div class="key__sub"></div>
+  <div class="opts"><button class="opt" type="button" data-next="abies" data-label-ru="Стоят вверх и рассыпаются" data-label-sah="Үөһэ тураллар уонна ыһыллаллар">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 54h16M26 54c-4-10 0-20 6-26 6 6 10 16 6 26"/><path d="M28 38h8M26 46h12"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Стоят вверх и рассыпаются</span><span class="sah">Үөһэ тураллар уонна ыһыллаллар</span></b><span><span class="ru">пихта</span><span class="sah">ыылаах</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button><button class="opt" type="button" data-next="picea" data-label-ru="Свисают вниз, 5–10 см" data-label-sah="Аллараа ыйаналлар, 5–10 см">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 8v10"/><path d="M26 18c-2 10 1 20 6 26 5-6 8-16 6-26"/><path d="M28 26h8M26 34h12"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Свисают вниз, 5–10 см</span><span class="sah">Аллараа ыйаналлар, 5–10 см</span></b><span><span class="ru">ель</span><span class="sah">харыйа</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button><button class="opt" type="button" data-next="larch" data-label-ru="Хвоя мягкая, опала: ветки голые" data-label-sah="Иннэ сымнаҕас, түспүт: лабаалар сүрүннээх">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 56V10"/><path d="M32 22 20 14M32 30 44 22M32 38 20 30M32 46 44 38"/><path d="M32 10l-4-4M32 10l4-4"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Хвоя мягкая, опала: ветки голые</span><span class="sah">Иннэ сымнаҕас, түспүт: лабаалар сүрүннээх</span></b><span><span class="ru">лиственница</span><span class="sah">тиит</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button><button class="opt" type="button" data-next="juniperus" data-label-ru="Шишки — синие «ягоды»" data-label-sah="Туорахтар — хара күөх «отон»">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 56V28"/><path d="M32 42 20 34M32 36 44 28"/><circle cx="18" cy="32" r="5"/><circle cx="26" cy="26" r="5"/><circle cx="44" cy="26" r="5"/><circle cx="37" cy="20" r="5"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Шишки — синие «ягоды»</span><span class="sah">Туорахтар — хара күөх «отон»</span></b><span><span class="ru">можжевельник</span><span class="sah">кытыан</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button></div>
+</section>
+<section class="key__step" data-step="larch" data-flow="needle" data-depth="3" data-kind="question">
+  <h3 class="key__q"><span class="ru">Какие шишки у лиственницы?</span><span class="sah">Тиит туорахтара хайдахтарый?</span></h3>
+  <div class="key__sub"></div>
+  <div class="opts"><button class="opt" type="button" data-next="larix-sibirica" data-label-ru="Шишки 2,5–4 см, чешуи округлые" data-label-sah="Туорахтар 2,5–4 см, хатырыктара төгүрүк">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 8c9 10 12 24 12 34 0 8-5 14-12 14s-12-6-12-14c0-10 3-24 12-34Z"/><path d="M24 24h16M21 34h22M21 44h22M25 52h14"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Шишки 2,5–4 см, чешуи округлые</span><span class="sah">Туорахтар 2,5–4 см, хатырыктара төгүрүк</span></b><span><span class="ru">лиственница сибирская</span><span class="sah">Сибиир тиитэ</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button><button class="opt" type="button" data-next="larix-cajanderi" data-label-ru="Шишки 1,5–2,5 см, чешуи опушённые" data-label-sah="Туорахтар 1,5–2,5 см, хатырыктара түүлээх">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 18c6 7 8 16 8 23 0 6-3 10-8 10s-8-4-8-10c0-7 2-16 8-23Z"/><path d="M27 30h10M25 38h14M27 46h10"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Шишки 1,5–2,5 см, чешуи опушённые</span><span class="sah">Туорахтар 1,5–2,5 см, хатырыктара түүлээх</span></b><span><span class="ru">лиственница Каяндера</span><span class="sah">Каяндер тиитэ</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button></div>
+</section>
+<section class="key__step" data-step="b-start" data-flow="bark" data-depth="1" data-kind="question">
+  <h3 class="key__q"><span class="ru">Что видно на дереве зимой?</span><span class="sah">Кыһын маска туох көстөр?</span></h3>
+  <div class="key__sub"></div>
+  <div class="opts"><button class="opt" type="button" data-next="b-cones" data-label-ru="На ветках есть шишки" data-label-sah="Лабааларга туорахтар бааллар">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 8c9 10 12 24 12 34 0 8-5 14-12 14s-12-6-12-14c0-10 3-24 12-34Z"/><path d="M24 24h16M21 34h22M21 44h22M25 52h14"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">На ветках есть шишки</span><span class="sah">Лабааларга туорахтар бааллар</span></b><span><span class="ru">рассмотрим шишки</span><span class="sah">туорахтары көрүөхпүт</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button><button class="opt" type="button" data-next="b-bark" data-label-ru="Только кора и крона" data-label-sah="Хатырык уонна салаа эрэ">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 56V8M40 56V8"/><path d="M20 16h20M20 28h20M20 40h20M20 50h20"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Только кора и крона</span><span class="sah">Хатырык уонна салаа эрэ</span></b><span><span class="ru">шишек не видно</span><span class="sah">туорах көстүбэт</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button><button class="opt" type="button" data-next="juniperus" data-label-ru="Стелющийся куст с синими ягодами" data-label-sah="Хара күөх отонноох сытар ыарҕа">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 56V28"/><path d="M32 42 20 34M32 36 44 28"/><circle cx="18" cy="32" r="5"/><circle cx="26" cy="26" r="5"/><circle cx="44" cy="26" r="5"/><circle cx="37" cy="20" r="5"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Стелющийся куст с синими ягодами</span><span class="sah">Хара күөх отонноох сытар ыарҕа</span></b><span><span class="ru">можжевельник</span><span class="sah">кытыан</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button></div>
+</section>
+<section class="key__step" data-step="b-cones" data-flow="bark" data-depth="2" data-kind="question">
+  <h3 class="key__q"><span class="ru">Какие шишки?</span><span class="sah">Туорахтар хайдахтарый?</span></h3>
+  <div class="key__sub"></div>
+  <div class="opts"><button class="opt" type="button" data-next="abies" data-label-ru="Стоят вверх, рассыпаются" data-label-sah="Үөһэ тураллар, ыһыллаллар">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 54h16M26 54c-4-10 0-20 6-26 6 6 10 16 6 26"/><path d="M28 38h8M26 46h12"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Стоят вверх, рассыпаются</span><span class="sah">Үөһэ тураллар, ыһыллаллар</span></b><span><span class="ru">пихта</span><span class="sah">ыылаах</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button><button class="opt" type="button" data-next="picea" data-label-ru="Свисают вниз, 5–10 см" data-label-sah="Аллараа ыйаналлар, 5–10 см">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 8v10"/><path d="M26 18c-2 10 1 20 6 26 5-6 8-16 6-26"/><path d="M28 26h8M26 34h12"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Свисают вниз, 5–10 см</span><span class="sah">Аллараа ыйаналлар, 5–10 см</span></b><span><span class="ru">ель</span><span class="sah">харыйа</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button><button class="opt" type="button" data-next="pinus-sylvestris" data-label-ru="Мелкие, 3–6 см, раскрытые" data-label-sah="Кыра, 3–6 см, аһыллыбыттар">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 18c6 7 8 16 8 23 0 6-3 10-8 10s-8-4-8-10c0-7 2-16 8-23Z"/><path d="M27 30h10M25 38h14M27 46h10"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Мелкие, 3–6 см, раскрытые</span><span class="sah">Кыра, 3–6 см, аһыллыбыттар</span></b><span><span class="ru">сосна обыкновенная</span><span class="sah">көннөрү бэс</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button><button class="opt" type="button" data-next="pinus-sibirica" data-label-ru="Крупные, 6–13 см, с орешками" data-label-sah="Бөдөҥ, 6–13 см, эриэхэлээх">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 8c9 10 12 24 12 34 0 8-5 14-12 14s-12-6-12-14c0-10 3-24 12-34Z"/><path d="M24 24h16M21 34h22M21 44h22M25 52h14"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Крупные, 6–13 см, с орешками</span><span class="sah">Бөдөҥ, 6–13 см, эриэхэлээх</span></b><span><span class="ru">сосна сибирская</span><span class="sah">сыалаах мас</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button></div>
+</section>
+<section class="key__step" data-step="b-bark" data-flow="bark" data-depth="2" data-kind="question">
+  <h3 class="key__q"><span class="ru">Какая кора?</span><span class="sah">Хатырык хайдаҕый?</span></h3>
+  <div class="key__sub"></div>
+  <div class="opts"><button class="opt" type="button" data-next="pinus-sylvestris" data-label-ru="Оранжево-красная вверху ствола" data-label-sah="Умсаҕа үөһэ өттө кытархай">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 56V10h24v46"/><path d="M20 32h24M20 22h24" opacity=".5"/><path d="M24 56V36M32 56V30M40 56V34"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Оранжево-красная вверху ствола</span><span class="sah">Умсаҕа үөһэ өттө кытархай</span></b><span><span class="ru">сосна обыкновенная</span><span class="sah">көннөрү бэс</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button><button class="opt" type="button" data-next="abies" data-label-ru="Гладкая, тёмно-серая, с желваками" data-label-sah="Ньулуун, хараҥа бороҥ, бөлөхтөрдөөх">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 56V8M32 56V8M42 56V8"/><path d="M22 20h10M22 40h10"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Гладкая, тёмно-серая, с желваками</span><span class="sah">Ньулуун, хараҥа бороҥ, бөлөхтөрдөөх</span></b><span><span class="ru">пихта</span><span class="sah">ыылаах</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button><button class="opt" type="button" data-next="b-larch" data-label-ru="Толстая, трещиноватая" data-label-sah="Модьу, хайытыылаах">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 56V8M40 56V8"/><path d="M20 16h20M20 28h20M20 40h20M20 50h20"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Толстая, трещиноватая</span><span class="sah">Модьу, хайытыылаах</span></b><span><span class="ru">лиственница</span><span class="sah">тиит</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button><button class="opt" type="button" data-next="picea" data-label-ru="Серая, чешуйчатая" data-label-sah="Бороҥ, хатырыктаах">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 56V8M40 56V8"/><path d="M24 16h6M28 28h8M24 40h8M30 50h6"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">Серая, чешуйчатая</span><span class="sah">Бороҥ, хатырыктаах</span></b><span><span class="ru">ель</span><span class="sah">харыйа</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button></div>
+</section>
+<section class="key__step" data-step="b-larch" data-flow="bark" data-depth="3" data-kind="question">
+  <h3 class="key__q"><span class="ru">Какие шишки под деревом?</span><span class="sah">Маска туорахтар хайдахтарый?</span></h3>
+  <div class="key__sub"></div>
+  <div class="opts"><button class="opt" type="button" data-next="larix-sibirica" data-label-ru="2,5–4 см, чешуи округлые" data-label-sah="2,5–4 см, хатырыктара төгүрүк">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 8c9 10 12 24 12 34 0 8-5 14-12 14s-12-6-12-14c0-10 3-24 12-34Z"/><path d="M24 24h16M21 34h22M21 44h22M25 52h14"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">2,5–4 см, чешуи округлые</span><span class="sah">2,5–4 см, хатырыктара төгүрүк</span></b><span><span class="ru">лиственница сибирская</span><span class="sah">Сибиир тиитэ</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button><button class="opt" type="button" data-next="larix-cajanderi" data-label-ru="1,5–2,5 см, чешуи опушённые" data-label-sah="1,5–2,5 см, хатырыктара түүлээх">
+              <span class="opt__ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 18c6 7 8 16 8 23 0 6-3 10-8 10s-8-4-8-10c0-7 2-16 8-23Z"/><path d="M27 30h10M25 38h14M27 46h10"/></svg></span>
+              <span class="opt__txt"><b><span class="ru">1,5–2,5 см, чешуи опушённые</span><span class="sah">1,5–2,5 см, хатырыктара түүлээх</span></b><span><span class="ru">лиственница Каяндера</span><span class="sah">Каяндер тиитэ</span></span></span>
+              <span class="opt__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+            </button></div>
+</section>
+<section class="key__step" data-step="picea" data-depth="3" data-kind="result">
+  <div class="key__q" style="margin-bottom:18px"><span class="ru">Похоже, это</span><span class="sah">Бу буолуон сөп</span>…</div>
+  <div class="result">
+    <div class="result__img"><img src="assets/img/picea-1.jpg" alt="Ель сибирская"></div>
+    <div class="result__body">
+      <h3>Ель сибирская</h3>
+      <div class="result__sah">Сибиир харыйата</div>
+      <div class="result__lat">Picea obovata Ledeb.</div>
+      <dl class="result__facts">
+        <div><dt>Хвоя</dt><dd>одиночная, 1–2,5 см, четырёхгранная, колючая, тёмно-зелёная</dd></div>
+        <div><dt>Шишки</dt><dd>свисают вниз, 5–10 см, созревают за год, опадают целиком</dd></div>
+      </dl>
+      <button class="btn btn--dark" type="button" data-open="picea"><span class="ru">Открыть карточку</span><span class="sah">Карточканы арый</span></button>
+    </div>
+  </div>
+</section>
+<section class="key__step" data-step="pinus-sylvestris" data-depth="3" data-kind="result">
+  <div class="key__q" style="margin-bottom:18px"><span class="ru">Похоже, это</span><span class="sah">Бу буолуон сөп</span>…</div>
+  <div class="result">
+    <div class="result__img"><img src="assets/img/pinus-sylvestris-1.jpg" alt="Сосна обыкновенная"></div>
+    <div class="result__body">
+      <h3>Сосна обыкновенная</h3>
+      <div class="result__sah">Көннөрү бэс</div>
+      <div class="result__lat">Pinus sylvestris L.</div>
+      <dl class="result__facts">
+        <div><dt>Хвоя</dt><dd>по две в пучке, 4–6 см, жёсткая, сизовато-зелёная</dd></div>
+        <div><dt>Шишки</dt><dd>3–6 см, созревают два года, семена с крылышком</dd></div>
+      </dl>
+      <button class="btn btn--dark" type="button" data-open="pinus-sylvestris"><span class="ru">Открыть карточку</span><span class="sah">Карточканы арый</span></button>
+    </div>
+  </div>
+</section>
+<section class="key__step" data-step="abies" data-depth="3" data-kind="result">
+  <div class="key__q" style="margin-bottom:18px"><span class="ru">Похоже, это</span><span class="sah">Бу буолуон сөп</span>…</div>
+  <div class="result">
+    <div class="result__img"><img src="assets/img/abies-1.jpg" alt="Пихта сибирская"></div>
+    <div class="result__body">
+      <h3>Пихта сибирская</h3>
+      <div class="result__sah">Сибиир ыылааҕа</div>
+      <div class="result__lat">Abies sibirica Ledeb.</div>
+      <dl class="result__facts">
+        <div><dt>Хвоя</dt><dd>плоская, мягкая, 2–5 см, снизу две белые полоски</dd></div>
+        <div><dt>Шишки</dt><dd>5–9 см, стоят вверх, рассыпаются на дереве</dd></div>
+      </dl>
+      <button class="btn btn--dark" type="button" data-open="abies"><span class="ru">Открыть карточку</span><span class="sah">Карточканы арый</span></button>
+    </div>
+  </div>
+</section>
+<section class="key__step" data-step="pinus-sibirica" data-depth="3" data-kind="result">
+  <div class="key__q" style="margin-bottom:18px"><span class="ru">Похоже, это</span><span class="sah">Бу буолуон сөп</span>…</div>
+  <div class="result">
+    <div class="result__img"><img src="assets/img/pinus-sibirica-1.jpg" alt="Сосна сибирская"></div>
+    <div class="result__body">
+      <h3>Сосна сибирская</h3>
+      <div class="result__sah">Сибиир бэһэ</div>
+      <div class="result__lat">Pinus sibirica Du Tour</div>
+      <dl class="result__facts">
+        <div><dt>Хвоя</dt><dd>по пять в пучке, 6–13 см, мягкая, тёмно-зелёная</dd></div>
+        <div><dt>Шишки</dt><dd>6–13 см, созревают на второй год, орешки съедобны</dd></div>
+      </dl>
+      <button class="btn btn--dark" type="button" data-open="pinus-sibirica"><span class="ru">Открыть карточку</span><span class="sah">Карточканы арый</span></button>
+    </div>
+  </div>
+</section>
+<section class="key__step" data-step="larix-sibirica" data-depth="3" data-kind="result">
+  <div class="key__q" style="margin-bottom:18px"><span class="ru">Похоже, это</span><span class="sah">Бу буолуон сөп</span>…</div>
+  <div class="result">
+    <div class="result__img"><img src="assets/img/larix-sibirica-1.jpg" alt="Лиственница сибирская"></div>
+    <div class="result__body">
+      <h3>Лиственница сибирская</h3>
+      <div class="result__sah">Сибиир тиитэ</div>
+      <div class="result__lat">Larix sibirica Ledeb.</div>
+      <dl class="result__facts">
+        <div><dt>Хвоя</dt><dd>в пучках по 20–40, 2–4 см, мягкая</dd></div>
+        <div><dt>Шишки</dt><dd>2,5–4 см, чешуи округлые, не опушённые</dd></div>
+      </dl>
+      <button class="btn btn--dark" type="button" data-open="larix-sibirica"><span class="ru">Открыть карточку</span><span class="sah">Карточканы арый</span></button>
+    </div>
+  </div>
+</section>
+<section class="key__step" data-step="larix-cajanderi" data-depth="3" data-kind="result">
+  <div class="key__q" style="margin-bottom:18px"><span class="ru">Похоже, это</span><span class="sah">Бу буолуон сөп</span>…</div>
+  <div class="result">
+    <div class="result__img"><img src="assets/img/larix-cajanderi-1.jpg" alt="Лиственница Каяндера"></div>
+    <div class="result__body">
+      <h3>Лиственница Каяндера</h3>
+      <div class="result__sah">Каяндер тиитэ</div>
+      <div class="result__lat">Larix cajanderi Mayr</div>
+      <dl class="result__facts">
+        <div><dt>Хвоя</dt><dd>в пучках по 15–30, 1,5–3 см, мягкая</dd></div>
+        <div><dt>Шишки</dt><dd>1,5–2,5 см, мелкие, чешуи опушённые</dd></div>
+      </dl>
+      <button class="btn btn--dark" type="button" data-open="larix-cajanderi"><span class="ru">Открыть карточку</span><span class="sah">Карточканы арый</span></button>
+    </div>
+  </div>
+</section>
+<section class="key__step" data-step="juniperus" data-depth="3" data-kind="result">
+  <div class="key__q" style="margin-bottom:18px"><span class="ru">Похоже, это</span><span class="sah">Бу буолуон сөп</span>…</div>
+  <div class="result">
+    <div class="result__img"><img src="assets/img/juniperus-1.jpg" alt="Можжевельник сибирский"></div>
+    <div class="result__body">
+      <h3>Можжевельник сибирский</h3>
+      <div class="result__sah">Сибиир кытыана</div>
+      <div class="result__lat">Juniperus sibirica Burgsd.</div>
+      <dl class="result__facts">
+        <div><dt>Хвоя</dt><dd>игловидная, 0,5–1,5 см, в мутовках по три, колючая</dd></div>
+        <div><dt>Шишки</dt><dd>шишкоягоды 6–9 мм, сине-чёрные, созревают два года</dd></div>
+      </dl>
+      <button class="btn btn--dark" type="button" data-open="juniperus"><span class="ru">Открыть карточку</span><span class="sah">Карточканы арый</span></button>
+    </div>
+  </div>
+</section></div>
+        <div class="key__nav">
+          <button type="button" id="keyBack" disabled>
+            <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M16 10H4M9 5l-5 5 5 5"/></svg>
+            <span class="ru">Назад</span><span class="sah">Төннүү</span>
+          </button>
+          <button type="button" class="key__reset" id="keyReset"><span class="ru">Заново</span><span class="sah">Саҥаттан</span></button>
+        </div>
+      </div>
+      <aside class="key__side" aria-label="Как пользоваться">
+        <div>
+          <h3><span class="ru">Как пользоваться</span><span class="sah">Хайдах туһаныахха</span></h3>
+          <p><span class="ru">Два ключа — по хвое и по коре. Выберите подходящий и отвечайте на вопросы.</span><span class="sah">Икки күлүүс — иннэнэн уонна хатырыгынан. Сөптөөҕүн талан ыйытыыларга эппиэттээ.</span></p>
+        </div>
+        <ol class="key__legend">
+          <li><b>1</b><span><span class="ru">Выберите ключ: по хвое или по шишкам и коре.</span><span class="sah">Күлүүс тал: иннэнэн эбэтэр туораҕынан, хатырыгынан.</span></span></li>
+          <li><b>2</b><span><span class="ru">Отвечайте на вопросы — можно вернуться назад.</span><span class="sah">Ыйытыыларга эппиэттээ — төннүөххэ сөп.</span></span></li>
+          <li><b>3</b><span><span class="ru">Сверьтесь с фотографией и карточкой вида.</span><span class="sah">Ойууну уонна көрүҥ карточкатын кытта тэҥнээ.</span></span></li>
+        </ol>
+        <div class="key__note"><span class="ru">Не уверены? Вернитесь назад или выберите второй ключ. Определитель не портит дерево: достаточно веточки, шишки или коры.</span><span class="sah">Итэҕэйбэт буоллаххына, төннөн иккис күлүүһү тал. Быһаарыы мас кэриэтин-куолутун алдьаппат: лабаа, туорах эбэтэр хатырык эрэ наада.</span></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="species">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="overline"><span class="ru">Виды</span><span class="sah">Көрүҥнэр</span></div>
+      <h2><span class="ru">Семь деревьев Беченчи</span><span class="sah">Беченча сэттэ маһа</span></h2>
+      <p><span class="ru">Нажмите на карточку: внутри — фотографии, признаки, места обитания и небольшая история.</span><span class="sah">Карточкаҕа баттаа: иһигэр ойуулар, бэлиэлэр, үүнэр сирдэр уонна кыра история баар.</span></p>
+    </div>
+    <div class="cards">
+<a class="card " href="#picea" data-open="picea" aria-label="Ель сибирская — открыть карточку">
+  <div class="card__media">
+    <img src="assets/img/picea-1.jpg" alt="Ель сибирская" loading="lazy">
+    <span class="card__num">01</span>
+    
+  </div>
+  <div class="card__body">
+    <h3 class="card__ru">Ель сибирская</h3>
+    <div class="card__sah">Сибиир харыйата</div>
+    <div class="card__lat">Picea obovata Ledeb.</div>
+    <p class="card__short"><span class="ru">Тёмная пирамидальная крона, колючая четырёхгранная хвоя и шишки, свисающие вниз.</span><span class="sah">Хараҥа пирамидалаах, хатыылаах түөрт өттүктээх иннэлээх, туорахтара аллараа ыйаналлар.</span></p>
+    <div class="card__tags"><span>20–35 м</span><span><span class="ru">вечнозелёное</span><span class="sah">куруук күөх</span></span><span><span class="ru">тень</span><span class="sah">күлүк</span></span></div>
+    <span class="card__go" aria-hidden="true">
+      <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg>
+    </span>
+  </div>
+</a>
+<a class="card " href="#pinus-sylvestris" data-open="pinus-sylvestris" aria-label="Сосна обыкновенная — открыть карточку">
+  <div class="card__media">
+    <img src="assets/img/pinus-sylvestris-1.jpg" alt="Сосна обыкновенная" loading="lazy">
+    <span class="card__num">02</span>
+    
+  </div>
+  <div class="card__body">
+    <h3 class="card__ru">Сосна обыкновенная</h3>
+    <div class="card__sah">Көннөрү бэс</div>
+    <div class="card__lat">Pinus sylvestris L.</div>
+    <p class="card__short"><span class="ru">Две хвоинки в пучке, оранжевая кора в верхней части ствола и мелкие шишки.</span><span class="sah">Бөлөҕүнэн икки иннэ, умсаҕын үөһээ өттө кытархай, туорахтара кыра.</span></p>
+    <div class="card__tags"><span>15–40 м</span><span><span class="ru">вечнозелёное</span><span class="sah">куруук күөх</span></span><span><span class="ru">свет</span><span class="sah">сырдык</span></span></div>
+    <span class="card__go" aria-hidden="true">
+      <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg>
+    </span>
+  </div>
+</a>
+<a class="card " href="#abies" data-open="abies" aria-label="Пихта сибирская — открыть карточку">
+  <div class="card__media">
+    <img src="assets/img/abies-1.jpg" alt="Пихта сибирская" loading="lazy">
+    <span class="card__num">03</span>
+    <span class="card__rb"><span class="ru">Красная книга</span><span class="sah">Кыһыл кинигэ</span></span>
+  </div>
+  <div class="card__body">
+    <h3 class="card__ru">Пихта сибирская</h3>
+    <div class="card__sah">Сибиир ыылааҕа</div>
+    <div class="card__lat">Abies sibirica Ledeb.</div>
+    <p class="card__short"><span class="ru">Плоская мягкая хвоя с двумя белыми полосками снизу и шишки-«свечки», стоящие вверх.</span><span class="sah">Хаптаҕай сымнаҕас иннэ, аллараа өттүгэр икки үрүҥ полоска, туорахтара үөһэ тураллар.</span></p>
+    <div class="card__tags"><span>20–30 м</span><span><span class="ru">вечнозелёное</span><span class="sah">куруук күөх</span></span><span><span class="ru">редкий вид</span><span class="sah">сэдэх көрүҥ</span></span></div>
+    <span class="card__go" aria-hidden="true">
+      <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg>
+    </span>
+  </div>
+</a>
+<a class="card " href="#pinus-sibirica" data-open="pinus-sibirica" aria-label="Сосна сибирская — открыть карточку">
+  <div class="card__media">
+    <img src="assets/img/pinus-sibirica-1.jpg" alt="Сосна сибирская" loading="lazy">
+    <span class="card__num">04</span>
+    
+  </div>
+  <div class="card__body">
+    <h3 class="card__ru">Сосна сибирская</h3>
+    <div class="card__sah">Сибиир бэһэ</div>
+    <div class="card__lat">Pinus sibirica Du Tour</div>
+    <p class="card__short"><span class="ru">Пять длинных хвоинок в пучке и крупные шишки со съедобными орешками.</span><span class="sah">Бөлөххө биэс уһун иннэ уонна эриэхэлээх бөдөҥ туорахтар.</span></p>
+    <div class="card__tags"><span>20–40 м</span><span><span class="ru">вечнозелёное</span><span class="sah">куруук күөх</span></span><span><span class="ru">орехи</span><span class="sah">эриэхэ</span></span></div>
+    <span class="card__go" aria-hidden="true">
+      <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg>
+    </span>
+  </div>
+</a>
+<a class="card " href="#larix-sibirica" data-open="larix-sibirica" aria-label="Лиственница сибирская — открыть карточку">
+  <div class="card__media">
+    <img src="assets/img/larix-sibirica-1.jpg" alt="Лиственница сибирская" loading="lazy">
+    <span class="card__num">05</span>
+    
+  </div>
+  <div class="card__body">
+    <h3 class="card__ru">Лиственница сибирская</h3>
+    <div class="card__sah">Сибиир тиитэ</div>
+    <div class="card__lat">Larix sibirica Ledeb.</div>
+    <p class="card__short"><span class="ru">Мягкая светло-зелёная хвоя щёткой, осенью золотеет и опадает; шишки с круглыми чешуями.</span><span class="sah">Сымнаҕас сырдык күөх иннэ, күһүн араҕастар уонна түһэр; туорахтара төгүрүк хатырыктаах.</span></p>
+    <div class="card__tags"><span>20–40 м</span><span><span class="ru">хвоя опадает</span><span class="sah">иннэтэ түһэр</span></span><span><span class="ru">золотая осень</span><span class="sah">күһүн араҕас</span></span></div>
+    <span class="card__go" aria-hidden="true">
+      <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg>
+    </span>
+  </div>
+</a>
+<a class="card " href="#larix-cajanderi" data-open="larix-cajanderi" aria-label="Лиственница Каяндера — открыть карточку">
+  <div class="card__media">
+    <img src="assets/img/larix-cajanderi-1.jpg" alt="Лиственница Каяндера" loading="lazy">
+    <span class="card__num">06</span>
+    
+  </div>
+  <div class="card__body">
+    <h3 class="card__ru">Лиственница Каяндера</h3>
+    <div class="card__sah">Каяндер тиитэ</div>
+    <div class="card__lat">Larix cajanderi Mayr</div>
+    <p class="card__short"><span class="ru">Главное дерево якутской тайги: мелкие шишки и морозостойкость до −60 °C.</span><span class="sah">Саха тайҕатын сүрүн маһа: кыра туорахтар уонна −60 °C тулуйар тымныыга туруоруу.</span></p>
+    <div class="card__tags"><span>10–30 м</span><span><span class="ru">хвоя опадает</span><span class="sah">иннэтэ түһэр</span></span><span><span class="ru">самое морозостойкое</span><span class="sah">саамай тымныыны тулуйар</span></span></div>
+    <span class="card__go" aria-hidden="true">
+      <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg>
+    </span>
+  </div>
+</a>
+<a class="card card--span2" href="#juniperus" data-open="juniperus" aria-label="Можжевельник сибирский — открыть карточку">
+  <div class="card__media">
+    <img src="assets/img/juniperus-1.jpg" alt="Можжевельник сибирский" loading="lazy">
+    <span class="card__num">07</span>
+    
+  </div>
+  <div class="card__body">
+    <h3 class="card__ru">Можжевельник сибирский</h3>
+    <div class="card__sah">Сибиир кытыана</div>
+    <div class="card__lat">Juniperus sibirica Burgsd.</div>
+    <p class="card__short"><span class="ru">Стелющийся кустарник с колючей хвоей в мутовках по три и синими шишкоягодами.</span><span class="sah">Сиргэ сытар ыарҕа, үстүү мутовкалаах хатыылаах иннэлээх, хара-күөх шишкоягодалардаах.</span></p>
+    <div class="card__tags"><span>0,3–1,5 м</span><span><span class="ru">вечнозелёный</span><span class="sah">куруук күөх</span></span><span><span class="ru">кустарник</span><span class="sah">ыарҕа</span></span></div>
+    <span class="card__go" aria-hidden="true">
+      <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg>
+    </span>
+  </div>
+</a></div>
+  </div>
+</section>
+
+<section class="section" id="winter">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="overline"><span class="ru">Зима</span><span class="sah">Кыһын</span></div>
+      <h2><span class="ru">Зимняя Беченча</span><span class="sah">Кыһыҥҥы Беченча</span></h2>
+      <p><span class="ru">Окрестности села зимой: ели в снегу, сосны на пригорках, лиственницы без хвои. Нажмите на фото — откроется карточка вида.</span><span class="sah">Кыһын сэлиэннэ эргинэ: хаардаах харыйалар, томтордорго бэстэр, иннэтэ түспүт тииттэр. Ойууга баттаа — көрүҥ карточката арыллар.</span></p>
+    </div>
+    <div class="winter-grid">
+<a class="wphoto" href="#picea" data-open="picea" aria-label="Ель во дворе — Ель сибирская">
+  <img src="assets/img/winter/w01.jpg" alt="Ель во дворе" loading="lazy">
+  <span class="wphoto__cap"><span class="ru">Ель во дворе</span><span class="sah">Дьиэ таһыгар харыйа</span></span>
+  <span class="wphoto__tag">Ель сибирская</span>
+</a>
+<a class="wphoto" href="#pinus-sylvestris" data-open="pinus-sylvestris" aria-label="Сосны и лиственница — Сосна обыкновенная">
+  <img src="assets/img/winter/w02.jpg" alt="Сосны и лиственница" loading="lazy">
+  <span class="wphoto__cap"><span class="ru">Сосны и лиственница</span><span class="sah">Бэстэр уонна тиит</span></span>
+  <span class="wphoto__tag">Сосна обыкновенная</span>
+</a>
+<a class="wphoto" href="#picea" data-open="picea" aria-label="Ель в селе — Ель сибирская">
+  <img src="assets/img/winter/w03.jpg" alt="Ель в селе" loading="lazy">
+  <span class="wphoto__cap"><span class="ru">Ель в селе</span><span class="sah">Сэлиэннэҕэ харыйа</span></span>
+  <span class="wphoto__tag">Ель сибирская</span>
+</a>
+<a class="wphoto" href="#pinus-sylvestris" data-open="pinus-sylvestris" aria-label="Сосны снизу — Сосна обыкновенная">
+  <img src="assets/img/winter/w05.jpg" alt="Сосны снизу" loading="lazy">
+  <span class="wphoto__cap"><span class="ru">Сосны снизу</span><span class="sah">Бэстэр алларааттан</span></span>
+  <span class="wphoto__tag">Сосна обыкновенная</span>
+</a>
+<a class="wphoto" href="#picea" data-open="picea" aria-label="Ветви под снегом — Ель сибирская">
+  <img src="assets/img/winter/w06.jpg" alt="Ветви под снегом" loading="lazy">
+  <span class="wphoto__cap"><span class="ru">Ветви под снегом</span><span class="sah">Хаардаах лабаалар</span></span>
+  <span class="wphoto__tag">Ель сибирская</span>
+</a>
+<a class="wphoto" href="#pinus-sylvestris" data-open="pinus-sylvestris" aria-label="Сосны на опушке — Сосна обыкновенная">
+  <img src="assets/img/winter/w07.jpg" alt="Сосны на опушке" loading="lazy">
+  <span class="wphoto__cap"><span class="ru">Сосны на опушке</span><span class="sah">Кырыыга бэстэр</span></span>
+  <span class="wphoto__tag">Сосна обыкновенная</span>
+</a>
+<a class="wphoto" href="#pinus-sylvestris" data-open="pinus-sylvestris" aria-label="Сосна у дома — Сосна обыкновенная">
+  <img src="assets/img/winter/w09.jpg" alt="Сосна у дома" loading="lazy">
+  <span class="wphoto__cap"><span class="ru">Сосна у дома</span><span class="sah">Дьиэ таһыгар бэс</span></span>
+  <span class="wphoto__tag">Сосна обыкновенная</span>
+</a>
+<a class="wphoto" href="#picea" data-open="picea" aria-label="Ельник с лиственницей — Ель сибирская">
+  <img src="assets/img/winter/w04.jpg" alt="Ельник с лиственницей" loading="lazy">
+  <span class="wphoto__cap"><span class="ru">Ельник с лиственницей</span><span class="sah">Тииттээх харыйа ойуура</span></span>
+  <span class="wphoto__tag">Ель сибирская</span>
+</a>
+<a class="wphoto" href="#pinus-sylvestris" data-open="pinus-sylvestris" aria-label="Сосновый лес зимой — Сосна обыкновенная">
+  <img src="assets/img/winter/w08.jpg" alt="Сосновый лес зимой" loading="lazy">
+  <span class="wphoto__cap"><span class="ru">Сосновый лес зимой</span><span class="sah">Кыһыҥҥы бэс ойуура</span></span>
+  <span class="wphoto__tag">Сосна обыкновенная</span>
+</a>
+<a class="wphoto" href="#pinus-sylvestris" data-open="pinus-sylvestris" aria-label="Сосна в селе — Сосна обыкновенная">
+  <img src="assets/img/winter/w10.jpg" alt="Сосна в селе" loading="lazy">
+  <span class="wphoto__cap"><span class="ru">Сосна в селе</span><span class="sah">Сэлиэннэҕэ бэс</span></span>
+  <span class="wphoto__tag">Сосна обыкновенная</span>
+</a></div>
+    <p class="where-note"><span class="ru">Зимой определить дерево помогают кора, крона и шишки под снегом. Второй ключ — как раз для этого.</span><span class="sah">Кыһын маһы хатырыгынан, салаатынан уонна хаар анныгар сытар туорахтарынан быһаарыахха сөп. Иккис күлүүс — ол туһугар.</span></p>
+  </div>
+</section>
+
+<section class="section" id="where" style="background:var(--paper-2)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="overline"><span class="ru">Где искать</span><span class="sah">Ханна көрдүөххэ</span></div>
+      <h2><span class="ru">Где искать</span><span class="sah">Ханна көрдүөххэ</span></h2>
+      <p><span class="ru">Беченча стоит на правом берегу реки Нюи, в 34 км к северо-востоку от Ленска. Вокруг — средняя тайга: лиственничники на склонах, сосняки на песках, ельники в пойме.</span><span class="sah">Беченча Ньүйэ өрүс уҥа кытылыгар, Ленскэйтэн 34 км хотугулуу-илин турар. Эргин — орто тайҕа: эниэлэргэ тииттэр, кумахха бэстэр, поймаҕа харыйалар.</span></p>
+    </div>
+    <div class="zones">
+<a class="zone" href="#picea" data-open="picea" aria-label="Пойма и сырые склоны">
+  <img src="assets/img/picea-1.jpg" alt="" loading="lazy">
+  <span class="zone__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+  <div class="zone__body">
+    <span class="zone__num"><span class="ru">зона</span><span class="sah">зона</span> 01</span>
+    <h3><span class="ru">Пойма и сырые склоны</span><span class="sah">Пойма уонна ньулуун эниэлэр</span></h3>
+    <div class="zone__chips"><span>Ель сибирская</span></div>
+  </div>
+</a>
+<a class="zone" href="#pinus-sylvestris" data-open="pinus-sylvestris" aria-label="Песчаные террасы">
+  <img src="assets/img/pinus-sylvestris-1.jpg" alt="" loading="lazy">
+  <span class="zone__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+  <div class="zone__body">
+    <span class="zone__num"><span class="ru">зона</span><span class="sah">зона</span> 02</span>
+    <h3><span class="ru">Песчаные террасы</span><span class="sah">Кумах тэрээһэлэр</span></h3>
+    <div class="zone__chips"><span>Сосна обыкновенная</span></div>
+  </div>
+</a>
+<a class="zone" href="#larix-cajanderi" data-open="larix-cajanderi" aria-label="Склоны и гари">
+  <img src="assets/img/larix-cajanderi-1.jpg" alt="" loading="lazy">
+  <span class="zone__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+  <div class="zone__body">
+    <span class="zone__num"><span class="ru">зона</span><span class="sah">зона</span> 03</span>
+    <h3><span class="ru">Склоны и гари</span><span class="sah">Эниэлэр уонна буруйдар</span></h3>
+    <div class="zone__chips"><span>Лиственница Каяндера</span><span>Лиственница сибирская</span></div>
+  </div>
+</a>
+<a class="zone" href="#pinus-sibirica" data-open="pinus-sibirica" aria-label="Тёплые южные склоны">
+  <img src="assets/img/pinus-sibirica-1.jpg" alt="" loading="lazy">
+  <span class="zone__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+  <div class="zone__body">
+    <span class="zone__num"><span class="ru">зона</span><span class="sah">зона</span> 04</span>
+    <h3><span class="ru">Тёплые южные склоны</span><span class="sah">Сылаас соҕуруу эниэлэр</span></h3>
+    <div class="zone__chips"><span>Сосна сибирская</span></div>
+  </div>
+</a>
+<a class="zone" href="#juniperus" data-open="juniperus" aria-label="Каменистые склоны">
+  <img src="assets/img/juniperus-1.jpg" alt="" loading="lazy">
+  <span class="zone__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+  <div class="zone__body">
+    <span class="zone__num"><span class="ru">зона</span><span class="sah">зона</span> 05</span>
+    <h3><span class="ru">Каменистые склоны</span><span class="sah">Таастаах эниэлэр</span></h3>
+    <div class="zone__chips"><span>Можжевельник сибирский</span></div>
+  </div>
+</a>
+<a class="zone" href="#abies" data-open="abies" aria-label="Тенистые распадки">
+  <img src="assets/img/abies-1.jpg" alt="" loading="lazy">
+  <span class="zone__arrow" aria-hidden="true"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+  <div class="zone__body">
+    <span class="zone__num"><span class="ru">зона</span><span class="sah">зона</span> 06</span>
+    <h3><span class="ru">Тенистые распадки</span><span class="sah">Күлүк хочолор</span></h3>
+    <div class="zone__chips"><span>Пихта сибирская</span></div>
+  </div>
+</a></div>
+    <p class="where-note"><span class="ru">Кедр и пихта в окрестностях редки — не срывайте их ветки и шишки. Остальные породы можно определить по опавшим шишкам и хвое.</span><span class="sah">Сыалаах мас уонна ыылаах эргин сэдэхтэр — лабааларын, туорахтарын быспаҥ. Атын көрүҥнэри түспүт туорахтарынан уонна иннэлэринэн быһаарыахха сөп.</span></p>
+  </div>
+</section>
+
+<section class="section" id="table">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="overline"><span class="ru">Сравнение</span><span class="sah">Тэҥнээһин</span></div>
+      <h2><span class="ru">Сравнение признаков</span><span class="sah">Бэлиэлэри тэҥнээһин</span></h2>
+      <p><span class="ru">Быстрая шпаргалка: хвоя, шишки, кора и высота. Прокрутите таблицу вбок на телефоне.</span><span class="sah">Түргэн көмө: иннэ, туорах, хатырык уонна үрдүк. Телефоҥҥа таблицаны ойоҕос гына көһөр.</span></p>
+    </div>
+    <div class="tablewrap">
+      <table class="cmp">
+        <thead><tr><th><span class="ru">Вид</span><span class="sah">Көрүҥ</span></th><th><span class="ru">Хвоя</span><span class="sah">Иннэ</span></th><th><span class="ru">Шишки</span><span class="sah">Туорахтар</span></th><th><span class="ru">Кора</span><span class="sah">Хатырык</span></th><th><span class="ru">Высота</span><span class="sah">Үрдүгэ</span></th></tr></thead>
+        <tbody><tr>
+          <td><div class="cmp__sp"><img src="assets/img/picea-1.jpg" alt="" loading="lazy"><span><b>Ель сибирская</b><span>Сибиир харыйата</span><span class="cmp__lat">Picea obovata Ledeb.</span></span></div></td>
+          <td><span class="ru">одиночная, 1–2,5 см, четырёхгранная, колючая, тёмно-зелёная</span><span class="sah">соҕотох, 1–2,5 см, түөрт өттүктээх, хатыылаах, хараҥа күөх</span></td>
+          <td><span class="ru">свисают вниз, 5–10 см, созревают за год, опадают целиком</span><span class="sah">аллараа ыйаналлар, 5–10 см, биир сылга ситэллэр, бүтүннүү түһэллэр</span></td>
+          <td><span class="ru">тёмно-серая, чешуйчатая, со смолой</span><span class="sah">хараҥа бороҥ, хатырыктаах, сыалаах</span></td>
+          <td>20–35 м</td>
+        </tr><tr>
+          <td><div class="cmp__sp"><img src="assets/img/pinus-sylvestris-1.jpg" alt="" loading="lazy"><span><b>Сосна обыкновенная</b><span>Көннөрү бэс</span><span class="cmp__lat">Pinus sylvestris L.</span></span></div></td>
+          <td><span class="ru">по две в пучке, 4–6 см, жёсткая, сизовато-зелёная</span><span class="sah">бөлөҕүнэн иккилии, 4–6 см, кытаанах, күөхтүҥү</span></td>
+          <td><span class="ru">3–6 см, созревают два года, семена с крылышком</span><span class="sah">3–6 см, икки сылга ситэллэр, сиэмэлэрэ кынаттаах</span></td>
+          <td><span class="ru">вверху оранжево-красная, внизу тёмная, трещиноватая</span><span class="sah">үөһэ кытархай, аллараа хараҥа, хайытыылаах</span></td>
+          <td>15–40 м</td>
+        </tr><tr>
+          <td><div class="cmp__sp"><img src="assets/img/abies-1.jpg" alt="" loading="lazy"><span><b>Пихта сибирская</b><span>Сибиир ыылааҕа</span><span class="cmp__lat">Abies sibirica Ledeb.</span></span></div></td>
+          <td><span class="ru">плоская, мягкая, 2–5 см, снизу две белые полоски</span><span class="sah">хаптаҕай, сымнаҕас, 2–5 см, аллараа өттүгэр икки үрүҥ полоска</span></td>
+          <td><span class="ru">5–9 см, стоят вверх, рассыпаются на дереве</span><span class="sah">5–9 см, үөһэ тураллар, маска ыһыллаллар</span></td>
+          <td><span class="ru">гладкая, тёмно-серая, со смоляными желваками</span><span class="sah">ньулуун, хараҥа бороҥ, сыа бөлөхтөрдөөх</span></td>
+          <td>20–30 м</td>
+        </tr><tr>
+          <td><div class="cmp__sp"><img src="assets/img/pinus-sibirica-1.jpg" alt="" loading="lazy"><span><b>Сосна сибирская</b><span>Сибиир бэһэ</span><span class="cmp__lat">Pinus sibirica Du Tour</span></span></div></td>
+          <td><span class="ru">по пять в пучке, 6–13 см, мягкая, тёмно-зелёная</span><span class="sah">бөлөҕүнэн биэстии, 6–13 см, сымнаҕас, хараҥа күөх</span></td>
+          <td><span class="ru">6–13 см, созревают на второй год, орешки съедобны</span><span class="sah">6–13 см, иккис сылга ситэллэр, эриэхэлэрэ сиэнэр</span></td>
+          <td><span class="ru">тёмно-серая, тонкая, у старых деревьев трещиноватая</span><span class="sah">хараҥа бороҥ, синньигэс, кырдьаҕас мастарга хайытыылаах</span></td>
+          <td>20–40 м</td>
+        </tr><tr>
+          <td><div class="cmp__sp"><img src="assets/img/larix-sibirica-1.jpg" alt="" loading="lazy"><span><b>Лиственница сибирская</b><span>Сибиир тиитэ</span><span class="cmp__lat">Larix sibirica Ledeb.</span></span></div></td>
+          <td><span class="ru">в пучках по 20–40, 2–4 см, мягкая</span><span class="sah">20–40-луу бөлөх, 2–4 см, сымнаҕас</span></td>
+          <td><span class="ru">2,5–4 см, чешуи округлые, не опушённые</span><span class="sah">2,5–4 см, хатырыктара төгүрүк, түүлээҕэ суох</span></td>
+          <td><span class="ru">толстая, трещиноватая, буро-серая</span><span class="sah">модьу, хайытыылаах, бороҥ-кытархай</span></td>
+          <td>20–40 м</td>
+        </tr><tr>
+          <td><div class="cmp__sp"><img src="assets/img/larix-cajanderi-1.jpg" alt="" loading="lazy"><span><b>Лиственница Каяндера</b><span>Каяндер тиитэ</span><span class="cmp__lat">Larix cajanderi Mayr</span></span></div></td>
+          <td><span class="ru">в пучках по 15–30, 1,5–3 см, мягкая</span><span class="sah">15–30-нуу бөлөх, 1,5–3 см, сымнаҕас</span></td>
+          <td><span class="ru">1,5–2,5 см, мелкие, чешуи опушённые</span><span class="sah">1,5–2,5 см, кыра, хатырыктара түүлээх</span></td>
+          <td><span class="ru">тёмно-серая, толстая, глубоко трещиноватая</span><span class="sah">хараҥа бороҥ, модьу, дириҥ хайытыылаах</span></td>
+          <td>10–30 м</td>
+        </tr><tr>
+          <td><div class="cmp__sp"><img src="assets/img/juniperus-1.jpg" alt="" loading="lazy"><span><b>Можжевельник сибирский</b><span>Сибиир кытыана</span><span class="cmp__lat">Juniperus sibirica Burgsd.</span></span></div></td>
+          <td><span class="ru">игловидная, 0,5–1,5 см, в мутовках по три, колючая</span><span class="sah">иннэ курдук, 0,5–1,5 см, үстүү мутовкаҕа, хатыылаах</span></td>
+          <td><span class="ru">шишкоягоды 6–9 мм, сине-чёрные, созревают два года</span><span class="sah">шишкоягодалар 6–9 мм, хара-күөх, икки сылга ситэллэр</span></td>
+          <td><span class="ru">бурая, чешуйчатая</span><span class="sah">кытархай-бороҥ, хатырыктаах</span></td>
+          <td>0,3–1,5 м</td>
+        </tr></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="quiz">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="overline"><span class="ru">Проверь себя</span><span class="sah">Бэйэҕин бэрэбиэркэлээ</span></div>
+      <h2><span class="ru">Проверь себя</span><span class="sah">Бэйэҕин бэрэбиэркэлээ</span></h2>
+      <p><span class="ru">Шесть фотографий — шесть вопросов. Угадайте дерево по снимку.</span><span class="sah">Алта ойуу — алта ыйытыы. Ойууттан маһы тап.</span></p>
+    </div>
+    <div class="quiz">
+      <div class="quiz__grid">
+        <div class="quiz__media">
+          <img id="quizImg" src="assets/img/larix-cajanderi-1.jpg" alt="">
+          <div class="quiz__score" id="quizScore">Правильно: 0 / 0</div>
+        </div>
+        <div class="quiz__body">
+          <div class="quiz__q" id="quizNum"><span class="ru">Вопрос 1 / 6</span><span class="sah">Ыйытыы 1 / 6</span></div>
+          <h3 class="quiz__title" id="quizTitle"><span class="ru">Что это за дерево?</span><span class="sah">Бу туох мас буолуой?</span></h3>
+          <div class="quiz__opts" id="quizOpts"></div>
+          <div class="quiz__feedback" id="quizFeedback"></div>
+          <div class="quiz__foot">
+            <button class="btn btn--dark" type="button" id="quizNext" hidden><span class="ru">Дальше</span><span class="sah">Аны</span></button>
+            <button class="btn btn--gold" type="button" id="quizAgain" hidden><span class="ru">Ещё раз</span><span class="sah">Өссө</span></button>
+            <div class="quiz__progress" id="quizProgress"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about" style="background:var(--paper-2)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="overline"><span class="ru">О проекте</span><span class="sah">Бу туһунан</span></div>
+      <h2><span class="ru">О проекте</span><span class="sah">Бу туһунан</span></h2>
+    </div>
+    <div class="about">
+      <div class="about__text">
+        <p><span class="ru">Определитель сделан для школы им. Е. М. Мареева с. Беченча и всех, кто гуляет по местной тайге. Фотографии — с Викисклада (свободные лицензии), названия растений сверены с ботаническими каталогами.</span><span class="sah">Бу быһаарыы Е. М. Мареев аатынан оскуолаҕа (Беченча с.) уонна олохтоох тайҕаҕа сылдьар дьоҥҥо ананар. Ойуулар — Викискладтан (көҥүл лицензиялар), үүнээйи ааттара ботаническай каталогтары кытта тэҥнэммиттэр.</span></p>
+        <p><span class="ru">Местные названия могут отличаться: в разных улусах одно и то же дерево зовут по-разному. Здесь собраны самые распространённые варианты.</span><span class="sah">Олохтоох ааттар уратыланыахтарын сөп: араас улууска биир мас атыннык ааттанар. Манна киэҥник туттуллар варианттар киллэриллибиттэр.</span></p>
+        <details style="margin-top:24px">
+          <summary style="cursor:pointer;font-weight:600;color:var(--forest-2)"><span class="ru">Фотографии</span><span class="sah">Ойуулар</span></summary>
+          <p class="credits">Ель сибирская — MPF, CC BY-SA 4.0; Ель сибирская — Кирилл Петухов, CC BY-SA 4.0; Ель сибирская — Petr Filippov, CC BY-SA 3.0; Сосна обыкновенная — Agnes Monkelbaan, CC BY-SA 4.0; Сосна обыкновенная — Tangopaso, Public domain; Сосна обыкновенная — George Chernilevsky, CC BY-SA 4.0; Пихта сибирская — Фахразиев Альфир Магафурьянович. This edit: MPF, CC BY-SA 4.0; Пихта сибирская — Krzysztof Ziarnek, Kenraiz, CC BY-SA 4.0; Пихта сибирская — Krzysztof Ziarnek, Kenraiz, CC BY-SA 4.0; Сосна сибирская — Vyacheslav Argenberg, CC BY 4.0; Сосна сибирская — Vyacheslav Argenberg, CC BY 4.0; Сосна сибирская — ILoveAllTrees, CC BY-SA 4.0; Лиственница сибирская — Montréalais, CC BY-SA 3.0; Лиственница сибирская — Nikolaev Sergei, CC BY-SA 4.0; Лиственница сибирская — Anneli Salo, CC BY-SA 3.0; Лиственница Каяндера — Trevbus, CC0; Лиственница Каяндера — Kinori, CC0; Лиственница Каяндера — Svetlana Ivanova, CC BY 3.0; Можжевельник сибирский — Steffen Bauer, CC BY 4.0; Можжевельник сибирский — Ivar Leidus, CC BY-SA 4.0; Можжевельник сибирский — Steffen Bauer, CC BY 4.0; Обложка — Trevbus, CC0; Зимние фотографии Беченчи — автор проекта.</p>
+        </details>
+      </div>
+      <div>
+        <h3 style="font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--forest-3)"><span class="ru">Источники</span><span class="sah">Источниктар</span></h3>
+        <ol class="src"><li><a href="https://garden-nefu.ru/catalog/front/index" target="_blank" rel="noopener">Каталог растений Ботанического сада СВФУ</a></li><li><a href="https://sakhatyla.ru/" target="_blank" rel="noopener">SakhaTyla.Ru — саха-нуучча тылдьыта</a></li><li>Красная книга Республики Саха (Якутия). Т. 1: Редкие и находящиеся под угрозой исчезновения виды растений и грибов</li><li>Исследовательская работа «Сосна сибирская в окрестностях с. Беченча», 2025</li><li><a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons — фотографии (лицензии CC BY, CC BY-SA, CC0, public domain)</a></li></ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand">
+          <svg viewBox="0 0 40 46" fill="none" aria-hidden="true"><path d="M20 2 8 18h6L6 30h8L4 43h32l-10-13h8l-8-12h6L20 2Z" fill="currentColor" opacity=".92"/><path d="M20 43v-6" stroke="currentColor" stroke-width="2.4"/></svg>
+          <b>Тайга</b>
+        </div>
+        <p><span class="ru">Учебный проект. Не является официальным определителем; для научных работ проверяйте признаки по гербарию.</span><span class="sah">Үөрэх бырайыага. Официальнай определитель буолбатах; научнай үлэҕэ бэлиэлэри гербарийынан бэрэбиэркэлээҥ.</span></p>
+        <p><span class="ru">Сделано для с. Беченча, Ленский район</span><span class="sah">Беченча с., Ленск улууһа ананар</span> · 2026</p>
+      </div>
+      <div class="footer__meta">
+        <a href="https://garden-nefu.ru/catalog/front/index" target="_blank" rel="noopener">Ботанический сад СВФУ</a>
+        <a href="https://sakhatyla.ru/" target="_blank" rel="noopener">SakhaTyla.Ru</a>
+        <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 · Беченча · Ленский район · Республика Саха (Якутия)</span>
+      <a href="#top">Наверх ↑</a>
+    </div>
+  </div>
+</footer>
+
+<div class="modal" id="m-picea" hidden aria-hidden="true">
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="h-picea" tabindex="-1">
+    <button class="modal__close" type="button" data-close aria-label="Закрыть">✕</button>
+    <div class="modal__grid">
+      <div class="gallery">
+        <div class="gallery__main"><img id="gm-picea" src="assets/img/picea-1.jpg" alt="Ель сибирская"></div>
+        <div class="gallery__thumbs"><button type="button" data-src="assets/img/picea-1.jpg" data-cap-ru="Ель с шишками" data-cap-sah="Туорахтаах харыйа" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Picea_obovata_(%D0%95%D0%BB%D1%8C_%D1%81%D0%B8%D0%B1%D0%B8%D1%80%D1%81%D0%BA%D0%B0%D1%8F),_%D0%9D%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9_%D0%BF%D0%B0%D1%80%D0%BA_%D0%A2%D0%B0%D0%B3%D0%B0%D0%BD%D0%B0%D0%B9_(31).jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MPF&lt;/a&gt; · CC BY-SA 4.0" class="is-active" aria-label="Фото 1">
+          <img src="assets/img/picea-1.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/picea-2.jpg" data-cap-ru="Зимние ветви с шишками" data-cap-sah="Кыһыҥҥы лабаалар" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:%D0%9D%D0%B0%D1%87%D0%B0%D0%BB%D0%BE_%D0%BC%D0%B0%D1%80%D1%82%D0%B0_%D0%B2_%D0%B5%D0%BB%D1%8C%D0%BD%D0%B8%D0%BA%D0%B5_%D0%B1%D0%BB%D0%B8%D0%B7_%D0%BC%D0%B5%D1%82%D0%B5%D0%BE%D1%81%D1%82%D0%B0%D0%BD%D1%86%D0%B8%D0%B8.jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Кирилл Петухов&lt;/a&gt; · CC BY-SA 4.0" class="" aria-label="Фото 2">
+          <img src="assets/img/picea-2.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/picea-3.jpg" data-cap-ru="Хвоя крупным планом" data-cap-sah="Иннэ чугастан" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Picea_obovata_Brno1.JPG&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Petr Filippov&lt;/a&gt; · CC BY-SA 3.0" class="" aria-label="Фото 3">
+          <img src="assets/img/picea-3.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/winter/w01.jpg" data-cap-ru="Ель во дворе" data-cap-sah="Дьиэ таһыгар харыйа" data-credit="Фото: автор проекта" class="" aria-label="Фото 4">
+          <img src="assets/img/winter/w01.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/winter/w03.jpg" data-cap-ru="Ель в селе" data-cap-sah="Сэлиэннэҕэ харыйа" data-credit="Фото: автор проекта" class="" aria-label="Фото 5">
+          <img src="assets/img/winter/w03.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/winter/w06.jpg" data-cap-ru="Ветви под снегом" data-cap-sah="Хаардаах лабаалар" data-credit="Фото: автор проекта" class="" aria-label="Фото 6">
+          <img src="assets/img/winter/w06.jpg" alt="" loading="lazy">
+        </button></div>
+        <p class="gallery__cap"><span class="ru">Ель с шишками</span><span class="sah">Туорахтаах харыйа</span></p>
+        <p class="gallery__credit">Фото: <a href="https://commons.wikimedia.org/wiki/File:Picea_obovata_(%D0%95%D0%BB%D1%8C_%D1%81%D0%B8%D0%B1%D0%B8%D1%80%D1%81%D0%BA%D0%B0%D1%8F),_%D0%9D%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9_%D0%BF%D0%B0%D1%80%D0%BA_%D0%A2%D0%B0%D0%B3%D0%B0%D0%BD%D0%B0%D0%B9_(31).jpg" target="_blank" rel="noopener">MPF</a> · CC BY-SA 4.0</p>
+      </div>
+      <div class="modal__content">
+        <div class="modal__kicker"><span class="ru">Виды</span><span class="sah">Көрүҥнэр</span> · 01 / 07</div>
+        <h2 id="h-picea">Ель сибирская</h2>
+        <div class="modal__names">
+          <span class="modal__sah">Сибиир харыйата</span>
+          <span class="modal__lat">Picea obovata Ledeb.</span>
+        </div>
+        <div class="modal__alt"><span class="ru">Другое название: ель</span><span class="sah">Атын аат: харыйа</span></div>
+        
+        <p class="modal__desc"><span class="ru">Вечнозелёное дерево с узкой пирамидальной кроной. Хвоя одиночная, четырёхгранная, колючая, 1–2,5 см, держится на ветвях 5–7 лет. Шишки удлинённые, 5–10 см, свисают вниз, созревают за один сезон и опадают целиком. Теневынослива и морозостойка, растёт в долинах рек, по сырым склонам и в смеси с берёзой. В Якутии ель обыкновенная (Picea abies) не растёт — её замещает близкая ель сибирская.</span><span class="sah">Синньигэс пирамидалаах куруук күөх мас. Иннэтэ соҕотох, түөрт өттүктээх, хатыылаах, 1–2,5 см, лабааҕа 5–7 сыл турар. Туорахтара уһун, 5–10 см, аллараа ыйаналлар, биир сайын иһигэр ситэллэр уонна бүтүннүү түһэллэр. Күлүгү уонна тымныыны тулуйар, өрүс хочотугар, ньулуун эниэлэргэ, хатыҥныын үүнэр. Саха сиригэр көннөрү харыйа (Picea abies) үүммэт — кинини чугас Сибиир харыйата солбуйар.</span></p>
+        <dl class="feats">
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16 16 4M9 16 16 9M4 11 9 6"/></svg><span class="ru">Хвоя</span><span class="sah">Иннэ</span></dt><dd><span class="ru">одиночная, 1–2,5 см, четырёхгранная, колючая, тёмно-зелёная</span><span class="sah">соҕотох, 1–2,5 см, түөрт өттүктээх, хатыылаах, хараҥа күөх</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3c4 4 5 9 5 12 0 3-2 5-5 5s-5-2-5-5c0-3 1-8 5-12Z"/><path d="M7 8h6M6 12h8M7 15h6"/></svg><span class="ru">Шишки</span><span class="sah">Туорахтар</span></dt><dd><span class="ru">свисают вниз, 5–10 см, созревают за год, опадают целиком</span><span class="sah">аллараа ыйаналлар, 5–10 см, биир сылга ситэллэр, бүтүннүү түһэллэр</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6c2-2 4 2 6 0s4 2 6 0M4 11c2-2 4 2 6 0s4 2 6 0M4 16c2-2 4 2 6 0s4 2 6 0"/></svg><span class="ru">Кора</span><span class="sah">Хатырык</span></dt><dd><span class="ru">тёмно-серая, чешуйчатая, со смолой</span><span class="sah">хараҥа бороҥ, хатырыктаах, сыалаах</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18s6-5.5 6-10a6 6 0 1 0-12 0c0 4.5 6 10 6 10Z"/><circle cx="10" cy="8" r="2"/></svg><span class="ru">Где искать</span><span class="sah">Ханна көрдүөххэ</span></dt><dd><span class="ru">Сырые распадки, долины ручьёв, пойма Нюи; чаще вместе с берёзой.</span><span class="sah">Ньулуун хочолор, үрүйэ хочолоро, Ньүйэ поймата; үксүн хатыҥныын.</span></dd></div>
+        </dl>
+        <div class="notes">
+          <div class="note"><h4><span class="ru">Как отличить</span><span class="sah">Хайдах араарыахха</span></h4><p><span class="ru">От пихты — колючей хвоей и свисающими шишками, от лиственницы — хвоя держится зимой.</span><span class="sah">Ыылаахтан — хатыылаах иннэтинэн уонна ыйанар туорахтарынан, тииттэн — иннэтэ кыһын да турарынан.</span></p></div>
+        </div>
+        <div class="fact"><h4><span class="ru">Знаете ли вы</span><span class="sah">Билэҕит дуо</span></h4><p><span class="ru">Ель живёт 250–300 лет, отдельные деревья — до 500. В густом ельнике под пологом почти нет травы: опавшая хвоя закисляет почву.</span><span class="sah">Харыйа 250–300 сыл, сороҕо 500 сылга дылы олорор. Халыҥ харыйалаах ойуурга от аҕыйах: түспүт иннэ буору кислолатар.</span></p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="m-pinus-sylvestris" hidden aria-hidden="true">
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="h-pinus-sylvestris" tabindex="-1">
+    <button class="modal__close" type="button" data-close aria-label="Закрыть">✕</button>
+    <div class="modal__grid">
+      <div class="gallery">
+        <div class="gallery__main"><img id="gm-pinus-sylvestris" src="assets/img/pinus-sylvestris-1.jpg" alt="Сосна обыкновенная"></div>
+        <div class="gallery__thumbs"><button type="button" data-src="assets/img/pinus-sylvestris-1.jpg" data-cap-ru="Сосны на открытом месте" data-cap-sah="Аһаҕас сиргэ бэстэр" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Delleboersterheide,_natuurgebied_van_het_It_Fryske_Gea._05-02-2025._(actm.)_11.jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Agnes Monkelbaan&lt;/a&gt; · CC BY-SA 4.0" class="is-active" aria-label="Фото 1">
+          <img src="assets/img/pinus-sylvestris-1.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/pinus-sylvestris-2.jpg" data-cap-ru="Шишки и линейка" data-cap-sah="Туорахтар уонна линейка" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Cones_of_Pinus_sylvestris,_Parc_de_l%27Aulnaye.jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Tangopaso&lt;/a&gt; · Public domain" class="" aria-label="Фото 2">
+          <img src="assets/img/pinus-sylvestris-2.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/pinus-sylvestris-3.jpg" data-cap-ru="Хвоя и молодая шишка" data-cap-sah="Иннэ уонна эдэр туорах" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Pinus_sylvestris_2020_G2.jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;George Chernilevsky&lt;/a&gt; · CC BY-SA 4.0" class="" aria-label="Фото 3">
+          <img src="assets/img/pinus-sylvestris-3.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/winter/w02.jpg" data-cap-ru="Сосны и лиственница" data-cap-sah="Бэстэр уонна тиит" data-credit="Фото: автор проекта" class="" aria-label="Фото 4">
+          <img src="assets/img/winter/w02.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/winter/w07.jpg" data-cap-ru="Сосны на опушке" data-cap-sah="Кырыыга бэстэр" data-credit="Фото: автор проекта" class="" aria-label="Фото 5">
+          <img src="assets/img/winter/w07.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/winter/w09.jpg" data-cap-ru="Сосна у дома" data-cap-sah="Дьиэ таһыгар бэс" data-credit="Фото: автор проекта" class="" aria-label="Фото 6">
+          <img src="assets/img/winter/w09.jpg" alt="" loading="lazy">
+        </button></div>
+        <p class="gallery__cap"><span class="ru">Сосны на открытом месте</span><span class="sah">Аһаҕас сиргэ бэстэр</span></p>
+        <p class="gallery__credit">Фото: <a href="https://commons.wikimedia.org/wiki/File:Delleboersterheide,_natuurgebied_van_het_It_Fryske_Gea._05-02-2025._(actm.)_11.jpg" target="_blank" rel="noopener">Agnes Monkelbaan</a> · CC BY-SA 4.0</p>
+      </div>
+      <div class="modal__content">
+        <div class="modal__kicker"><span class="ru">Виды</span><span class="sah">Көрүҥнэр</span> · 02 / 07</div>
+        <h2 id="h-pinus-sylvestris">Сосна обыкновенная</h2>
+        <div class="modal__names">
+          <span class="modal__sah">Көннөрү бэс</span>
+          <span class="modal__lat">Pinus sylvestris L.</span>
+        </div>
+        <div class="modal__alt"><span class="ru">Другое название: сосна</span><span class="sah">Атын аат: бэс</span></div>
+        
+        <p class="modal__desc"><span class="ru">Дерево до 40 м, в Якутии обычно 15–25 м. Крона молодых деревьев конусовидная, у взрослых — округлая, ветви в верхней части оранжево-красные. Хвоя в пучках по две, 4–6 см, жёсткая. Шишки мелкие, 3–6 см, созревают на второй год. Светолюбива, растёт на песчаных почвах, образует сосновые боры по террасам Нюи и Лены.</span><span class="sah">Үрдүгэ 40 м тиийэр мас, Саха сиригэр 15–25 м. Ыччат салаата конус курдук, улааппытын кэннэ төгүрүк, үөһээ өттүнээҕи лабаалара кытархай. Иннэтэ иккилии бөлөҕүнэн, 4–6 см, кытаанах. Туорахтара кыра, 3–6 см, иккис сылга ситэллэр. Сырдыкы сөбүлүүр, кумах буорга үүнэр, Ньүйэ уонна Өлүөнэ тэрээһэлэригэр бэс ойуурун үөскэтэр.</span></p>
+        <dl class="feats">
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16 16 4M9 16 16 9M4 11 9 6"/></svg><span class="ru">Хвоя</span><span class="sah">Иннэ</span></dt><dd><span class="ru">по две в пучке, 4–6 см, жёсткая, сизовато-зелёная</span><span class="sah">бөлөҕүнэн иккилии, 4–6 см, кытаанах, күөхтүҥү</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3c4 4 5 9 5 12 0 3-2 5-5 5s-5-2-5-5c0-3 1-8 5-12Z"/><path d="M7 8h6M6 12h8M7 15h6"/></svg><span class="ru">Шишки</span><span class="sah">Туорахтар</span></dt><dd><span class="ru">3–6 см, созревают два года, семена с крылышком</span><span class="sah">3–6 см, икки сылга ситэллэр, сиэмэлэрэ кынаттаах</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6c2-2 4 2 6 0s4 2 6 0M4 11c2-2 4 2 6 0s4 2 6 0M4 16c2-2 4 2 6 0s4 2 6 0"/></svg><span class="ru">Кора</span><span class="sah">Хатырык</span></dt><dd><span class="ru">вверху оранжево-красная, внизу тёмная, трещиноватая</span><span class="sah">үөһэ кытархай, аллараа хараҥа, хайытыылаах</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18s6-5.5 6-10a6 6 0 1 0-12 0c0 4.5 6 10 6 10Z"/><circle cx="10" cy="8" r="2"/></svg><span class="ru">Где искать</span><span class="sah">Ханна көрдүөххэ</span></dt><dd><span class="ru">Песчаные террасы Нюи и Лены, сухие всхолмления, опушки.</span><span class="sah">Ньүйэ уонна Өлүөнэ кумах тэрээһэлэрэ, кураанах томтордор, кырыылар.</span></dd></div>
+        </dl>
+        <div class="notes">
+          <div class="note"><h4><span class="ru">Как отличить</span><span class="sah">Хайдах араарыахха</span></h4><p><span class="ru">От кедра — двумя хвоинками в пучке и мелкими шишками, от ели — пучками.</span><span class="sah">Сыалаах мастан — иккилии иннэлээх бөлөҕүнэн уонна кыра туорахтарынан, харыйаттан — бөлөхтөрүнэн.</span></p></div>
+        </div>
+        <div class="fact"><h4><span class="ru">Знаете ли вы</span><span class="sah">Билэҕит дуо</span></h4><p><span class="ru">Сосна даёт живицу — смолу, которой лечат раны. В Якутии сосняки растут на песчаных террасах, где мерзлота оттаивает глубже.</span><span class="sah">Бэс сибилир — оһоллону эмтиир саа. Саха сиригэр бэстэр кумах тэрээһэлэригэр үүнэллэр, онно тоҥ буор дириҥник ириир.</span></p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="m-abies" hidden aria-hidden="true">
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="h-abies" tabindex="-1">
+    <button class="modal__close" type="button" data-close aria-label="Закрыть">✕</button>
+    <div class="modal__grid">
+      <div class="gallery">
+        <div class="gallery__main"><img id="gm-abies" src="assets/img/abies-1.jpg" alt="Пихта сибирская"></div>
+        <div class="gallery__thumbs"><button type="button" data-src="assets/img/abies-1.jpg" data-cap-ru="Пихта в тайге" data-cap-sah="Тайҕаҕа ыылаах" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Abies_sibirica,_Ergaki,_Krasnoyarsk_Krai_1.jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Фахразиев Альфир Магафурьянович. This edit: MPF&lt;/a&gt; · CC BY-SA 4.0" class="is-active" aria-label="Фото 1">
+          <img src="assets/img/abies-1.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/abies-2.jpg" data-cap-ru="Хвоя и шишки" data-cap-sah="Иннэ уонна туорахтар" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Abies_sibirica_kz3.jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Krzysztof Ziarnek, Kenraiz&lt;/a&gt; · CC BY-SA 4.0" class="" aria-label="Фото 2">
+          <img src="assets/img/abies-2.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/abies-3.jpg" data-cap-ru="Молодая пихта" data-cap-sah="Эдэр ыылаах" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Abies_sibirica_kz1.jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Krzysztof Ziarnek, Kenraiz&lt;/a&gt; · CC BY-SA 4.0" class="" aria-label="Фото 3">
+          <img src="assets/img/abies-3.jpg" alt="" loading="lazy">
+        </button></div>
+        <p class="gallery__cap"><span class="ru">Пихта в тайге</span><span class="sah">Тайҕаҕа ыылаах</span></p>
+        <p class="gallery__credit">Фото: <a href="https://commons.wikimedia.org/wiki/File:Abies_sibirica,_Ergaki,_Krasnoyarsk_Krai_1.jpg" target="_blank" rel="noopener">Фахразиев Альфир Магафурьянович. This edit: MPF</a> · CC BY-SA 4.0</p>
+      </div>
+      <div class="modal__content">
+        <div class="modal__kicker"><span class="ru">Виды</span><span class="sah">Көрүҥнэр</span> · 03 / 07</div>
+        <h2 id="h-abies">Пихта сибирская</h2>
+        <div class="modal__names">
+          <span class="modal__sah">Сибиир ыылааҕа</span>
+          <span class="modal__lat">Abies sibirica Ledeb.</span>
+        </div>
+        <div class="modal__alt"><span class="ru">Другое название: пихта</span><span class="sah">Атын аат: сытыган харыйа</span></div>
+        <div class="badge-rb"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18s6-5.5 6-10a6 6 0 1 0-12 0c0 4.5 6 10 6 10Z"/><circle cx="10" cy="8" r="2"/></svg><span class="ru">Красная книга Якутии</span><span class="sah">Саха сирин Кыһыл кинигэтэ</span> · <span class="ru">категория 3г — редкий вид на границе ареала</span><span class="sah">3г категория — ареал кырыытыгар сэдэх көрүҥ</span></div>
+        <p class="modal__desc"><span class="ru">Дерево до 30 м с узкопирамидальной кроной, опущенной до земли. Кора гладкая, тёмно-серая, со смоляными желваками. Хвоя плоская, мягкая, 2–5 см, сверху тёмно-зелёная, снизу с двумя белыми полосками, душистая. Шишки 5–9 см, стоят вверх и рассыпаются на дереве. Теневынослива, требовательна к влажности. В Якутии редка — на северо-восточной границе ареала.</span><span class="sah">Үрдүгэ 30 м, сиргэ дылы түспүт синньигэс пирамидалаах мас. Хатырыга ньулуун, хараҥа бороҥ, сыа бөлөхтөрдөөх. Иннэтэ хаптаҕай, сымнаҕас, 2–5 см, үөһээ өттө хараҥа күөх, аллараа өттүгэр икки үрүҥ полоскалаах, сыттаах. Туорахтара 5–9 см, үөһэ тураллар уонна маска ыһыллаллар. Күлүгү сөбүлүүр, ууну элбэхтик ирдиир. Саха сиригэр сэдэх — ареалын хотугулуу-илин кырыытыгар.</span></p>
+        <dl class="feats">
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16 16 4M9 16 16 9M4 11 9 6"/></svg><span class="ru">Хвоя</span><span class="sah">Иннэ</span></dt><dd><span class="ru">плоская, мягкая, 2–5 см, снизу две белые полоски</span><span class="sah">хаптаҕай, сымнаҕас, 2–5 см, аллараа өттүгэр икки үрүҥ полоска</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3c4 4 5 9 5 12 0 3-2 5-5 5s-5-2-5-5c0-3 1-8 5-12Z"/><path d="M7 8h6M6 12h8M7 15h6"/></svg><span class="ru">Шишки</span><span class="sah">Туорахтар</span></dt><dd><span class="ru">5–9 см, стоят вверх, рассыпаются на дереве</span><span class="sah">5–9 см, үөһэ тураллар, маска ыһыллаллар</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6c2-2 4 2 6 0s4 2 6 0M4 11c2-2 4 2 6 0s4 2 6 0M4 16c2-2 4 2 6 0s4 2 6 0"/></svg><span class="ru">Кора</span><span class="sah">Хатырык</span></dt><dd><span class="ru">гладкая, тёмно-серая, со смоляными желваками</span><span class="sah">ньулуун, хараҥа бороҥ, сыа бөлөхтөрдөөх</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18s6-5.5 6-10a6 6 0 1 0-12 0c0 4.5 6 10 6 10Z"/><circle cx="10" cy="8" r="2"/></svg><span class="ru">Где искать</span><span class="sah">Ханна көрдүөххэ</span></dt><dd><span class="ru">Тенистые склоны и долины; в Якутии — Алдан и Верхняя Лена, у Беченчи — единично.</span><span class="sah">Күлүк эниэлэр уонна хочолор; Саха сиригэр — Алдан уонна Үөһээ Өлүөнэ, Беченча аттыгар — сэдэх.</span></dd></div>
+        </dl>
+        <div class="notes">
+          <div class="note"><h4><span class="ru">Как отличить</span><span class="sah">Хайдах араарыахха</span></h4><p><span class="ru">От ели — мягкой плоской хвоей с белыми полосками и шишками, стоящими вверх.</span><span class="sah">Харыйаттан — сымнаҕас хаптаҕай иннэтинэн, үрүҥ полоскаларынан уонна үөһэ турар туорахтарынан.</span></p></div>
+        </div>
+        <div class="fact"><h4><span class="ru">Знаете ли вы</span><span class="sah">Билэҕит дуо</span></h4><p><span class="ru">Шишки пихты созревают на дереве и рассыпаются, оставляя голый стержень. Хвоя пахнет, поэтому в народе пихту зовут «пахучей елью» — сытыган харыйа.</span><span class="sah">Ыылаах туорахтара маска ситэн ыһыллаллар, онно куһаҕас умсаҕа хаалар. Иннэтэ сыттаах, онон норуот ыылааҕы «сытыган харыйа» диир.</span></p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="m-pinus-sibirica" hidden aria-hidden="true">
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="h-pinus-sibirica" tabindex="-1">
+    <button class="modal__close" type="button" data-close aria-label="Закрыть">✕</button>
+    <div class="modal__grid">
+      <div class="gallery">
+        <div class="gallery__main"><img id="gm-pinus-sibirica" src="assets/img/pinus-sibirica-1.jpg" alt="Сосна сибирская"></div>
+        <div class="gallery__thumbs"><button type="button" data-src="assets/img/pinus-sibirica-1.jpg" data-cap-ru="Кедровый лес" data-cap-sah="Сыалаах ойуур" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Ergaki,_Siberian_pine_forest,_Spruce_forest,_Taiga_wilderness,_Sayan_Mountains,_Siberia,_Russia.jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Vyacheslav Argenberg&lt;/a&gt; · CC BY 4.0" class="is-active" aria-label="Фото 1">
+          <img src="assets/img/pinus-sibirica-1.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/pinus-sibirica-2.jpg" data-cap-ru="Шишка и хвоя" data-cap-sah="Туорах уонна иннэ" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Ergaki,_Siberian_pine_cone_with_seeds_and_foliage,_Pinus_sibirica,_Sayan_Mountains,_Russia.jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Vyacheslav Argenberg&lt;/a&gt; · CC BY 4.0" class="" aria-label="Фото 2">
+          <img src="assets/img/pinus-sibirica-2.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/pinus-sibirica-3.jpg" data-cap-ru="Зрелая шишка" data-cap-sah="Ситтибит туорах" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Pinus_pumila_%C3%97_P._sibirica_immature_cone.jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;ILoveAllTrees&lt;/a&gt; · CC BY-SA 4.0" class="" aria-label="Фото 3">
+          <img src="assets/img/pinus-sibirica-3.jpg" alt="" loading="lazy">
+        </button></div>
+        <p class="gallery__cap"><span class="ru">Кедровый лес</span><span class="sah">Сыалаах ойуур</span></p>
+        <p class="gallery__credit">Фото: <a href="https://commons.wikimedia.org/wiki/File:Ergaki,_Siberian_pine_forest,_Spruce_forest,_Taiga_wilderness,_Sayan_Mountains,_Siberia,_Russia.jpg" target="_blank" rel="noopener">Vyacheslav Argenberg</a> · CC BY 4.0</p>
+      </div>
+      <div class="modal__content">
+        <div class="modal__kicker"><span class="ru">Виды</span><span class="sah">Көрүҥнэр</span> · 04 / 07</div>
+        <h2 id="h-pinus-sibirica">Сосна сибирская</h2>
+        <div class="modal__names">
+          <span class="modal__sah">Сибиир бэһэ</span>
+          <span class="modal__lat">Pinus sibirica Du Tour</span>
+        </div>
+        <div class="modal__alt"><span class="ru">Другое название: кедр сибирский</span><span class="sah">Атын аат: сыалаах мас</span></div>
+        
+        <p class="modal__desc"><span class="ru">Крупное дерево 20–35 (40) м с густой тёмно-зелёной кроной. Хвоя в пучках по пять, 6–13 см, мягкая. Шишки крупные, 6–13 см, созревают на второй год; семена — съедобные орешки. Теневынослива в молодости, любит свежие дренированные почвы. В Якутии — на северо-восточном пределе ареала: небольшие куртины на тёплых южных склонах и террасах, плодоношение нерегулярное.</span><span class="sah">Бөдөҥ мас, 20–35 (40) м, халыҥ хараҥа күөх салаалаах. Иннэтэ биэстии бөлөҕүнэн, 6–13 см, сымнаҕас. Туорахтара бөдөҥ, 6–13 см, иккис сылга ситэллэр; сиэмэлэрэ — сиэнэр эриэхэлэр. Ыччатыгар күлүгү тулуйар, саҥа, ууну ылынар буору сөбүлүүр. Саха сиригэр ареалын хотугулуу-илин кырыытыгар: сылаас соҕуруу эниэлэргэ уонна тэрээһэлэргэ кыра бөлөхтөр, эриэхэтэ хас сыл аайы буолбат.</span></p>
+        <dl class="feats">
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16 16 4M9 16 16 9M4 11 9 6"/></svg><span class="ru">Хвоя</span><span class="sah">Иннэ</span></dt><dd><span class="ru">по пять в пучке, 6–13 см, мягкая, тёмно-зелёная</span><span class="sah">бөлөҕүнэн биэстии, 6–13 см, сымнаҕас, хараҥа күөх</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3c4 4 5 9 5 12 0 3-2 5-5 5s-5-2-5-5c0-3 1-8 5-12Z"/><path d="M7 8h6M6 12h8M7 15h6"/></svg><span class="ru">Шишки</span><span class="sah">Туорахтар</span></dt><dd><span class="ru">6–13 см, созревают на второй год, орешки съедобны</span><span class="sah">6–13 см, иккис сылга ситэллэр, эриэхэлэрэ сиэнэр</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6c2-2 4 2 6 0s4 2 6 0M4 11c2-2 4 2 6 0s4 2 6 0M4 16c2-2 4 2 6 0s4 2 6 0"/></svg><span class="ru">Кора</span><span class="sah">Хатырык</span></dt><dd><span class="ru">тёмно-серая, тонкая, у старых деревьев трещиноватая</span><span class="sah">хараҥа бороҥ, синньигэс, кырдьаҕас мастарга хайытыылаах</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18s6-5.5 6-10a6 6 0 1 0-12 0c0 4.5 6 10 6 10Z"/><circle cx="10" cy="8" r="2"/></svg><span class="ru">Где искать</span><span class="sah">Ханна көрдүөххэ</span></dt><dd><span class="ru">Тёплые южные склоны коренного берега Нюи и дренированные террасы; небольшие куртины.</span><span class="sah">Ньүйэ кытылын сылаас соҕуруу эниэлэрэ уонна ууну ылынар тэрээһэлэр; кыра бөлөхтөр.</span></dd></div>
+        </dl>
+        <div class="notes">
+          <div class="note"><h4><span class="ru">Как отличить</span><span class="sah">Хайдах араарыахха</span></h4><p><span class="ru">От сосны обыкновенной — пятью хвоинками в пучке и крупными шишками.</span><span class="sah">Көннөрү бэстэн — биэс иннэлээх бөлөҕүнэн уонна бөдөҥ туорахтарынан.</span></p></div>
+        </div>
+        <div class="fact"><h4><span class="ru">Знаете ли вы</span><span class="sah">Билэҕит дуо</span></h4><p><span class="ru">Кедровые орешки — корм кедровки, белки и бурундука. В окрестностях Беченчи кедр на северо-восточной границе ареала: деревья ниже, а урожаи бывают не каждый год.</span><span class="sah">Эриэхэ — кедровка, тииҥ, бурундук аһа. Беченча аттыгар сыалаах мас ареалын хотугулуу-илин кырыытыгар: мастар намыһахтар, эриэхэ хас сыл аайы буолбат.</span></p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="m-larix-sibirica" hidden aria-hidden="true">
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="h-larix-sibirica" tabindex="-1">
+    <button class="modal__close" type="button" data-close aria-label="Закрыть">✕</button>
+    <div class="modal__grid">
+      <div class="gallery">
+        <div class="gallery__main"><img id="gm-larix-sibirica" src="assets/img/larix-sibirica-1.jpg" alt="Лиственница сибирская"></div>
+        <div class="gallery__thumbs"><button type="button" data-src="assets/img/larix-sibirica-1.jpg" data-cap-ru="Лиственница осенью" data-cap-sah="Күһүҥҥү тиит" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Siberian-larch.jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Montréalais&lt;/a&gt; · CC BY-SA 3.0" class="is-active" aria-label="Фото 1">
+          <img src="assets/img/larix-sibirica-1.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/larix-sibirica-2.jpg" data-cap-ru="Шишка крупным планом" data-cap-sah="Туорах чугастан" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:%D0%90%D0%B1%D0%B7%D0%B0%D0%BA%D0%BE%D0%B2%D0%BE_%D0%BE%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%BD%D0%BE%D1%81%D1%82%D0%B8_4.jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Nikolaev Sergei&lt;/a&gt; · CC BY-SA 4.0" class="" aria-label="Фото 2">
+          <img src="assets/img/larix-sibirica-2.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/larix-sibirica-3.jpg" data-cap-ru="Зимняя лиственница" data-cap-sah="Кыһыҥҥы тиит" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Siberian_larch_-_Siperianlehtikuusi,_Sibirisk_l%C3%A4rktr%C3%A4d_cropped_C.JPG&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Anneli Salo&lt;/a&gt; · CC BY-SA 3.0" class="" aria-label="Фото 3">
+          <img src="assets/img/larix-sibirica-3.jpg" alt="" loading="lazy">
+        </button></div>
+        <p class="gallery__cap"><span class="ru">Лиственница осенью</span><span class="sah">Күһүҥҥү тиит</span></p>
+        <p class="gallery__credit">Фото: <a href="https://commons.wikimedia.org/wiki/File:Siberian-larch.jpg" target="_blank" rel="noopener">Montréalais</a> · CC BY-SA 3.0</p>
+      </div>
+      <div class="modal__content">
+        <div class="modal__kicker"><span class="ru">Виды</span><span class="sah">Көрүҥнэр</span> · 05 / 07</div>
+        <h2 id="h-larix-sibirica">Лиственница сибирская</h2>
+        <div class="modal__names">
+          <span class="modal__sah">Сибиир тиитэ</span>
+          <span class="modal__lat">Larix sibirica Ledeb.</span>
+        </div>
+        <div class="modal__alt"><span class="ru">Другое название: лиственница</span><span class="sah">Атын аат: тиит</span></div>
+        
+        <p class="modal__desc"><span class="ru">Крупное дерево 20–30 (40) м. Хвоя мягкая, светло-зелёная, 2–4 см, собрана в пучки по 20–40; осенью желтеет и опадает. Шишки 2,5–4 см, яйцевидные, с округлыми цельными чешуями. Светолюбива, растёт на склонах и в долинах юго-запада Якутии.</span><span class="sah">Бөдөҥ мас, 20–30 (40) м. Иннэтэ сымнаҕас, сырдык күөх, 2–4 см, 20–40-луу бөлөх; күһүн араҕастар уонна түһэр. Туорахтара 2,5–4 см, сымыыт курдук, төгүрүк бүтүн хатырыктаах. Сырдыкы сөбүлүүр, Саха сирин арҕаа-соҕуруу өттүн эниэлэригэр уонна хочолоругар үүнэр.</span></p>
+        <dl class="feats">
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16 16 4M9 16 16 9M4 11 9 6"/></svg><span class="ru">Хвоя</span><span class="sah">Иннэ</span></dt><dd><span class="ru">в пучках по 20–40, 2–4 см, мягкая</span><span class="sah">20–40-луу бөлөх, 2–4 см, сымнаҕас</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3c4 4 5 9 5 12 0 3-2 5-5 5s-5-2-5-5c0-3 1-8 5-12Z"/><path d="M7 8h6M6 12h8M7 15h6"/></svg><span class="ru">Шишки</span><span class="sah">Туорахтар</span></dt><dd><span class="ru">2,5–4 см, чешуи округлые, не опушённые</span><span class="sah">2,5–4 см, хатырыктара төгүрүк, түүлээҕэ суох</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6c2-2 4 2 6 0s4 2 6 0M4 11c2-2 4 2 6 0s4 2 6 0M4 16c2-2 4 2 6 0s4 2 6 0"/></svg><span class="ru">Кора</span><span class="sah">Хатырык</span></dt><dd><span class="ru">толстая, трещиноватая, буро-серая</span><span class="sah">модьу, хайытыылаах, бороҥ-кытархай</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18s6-5.5 6-10a6 6 0 1 0-12 0c0 4.5 6 10 6 10Z"/><circle cx="10" cy="8" r="2"/></svg><span class="ru">Где искать</span><span class="sah">Ханна көрдүөххэ</span></dt><dd><span class="ru">Склоны и долины юго-запада Якутии; в Ленском районе встречается реже Каяндера.</span><span class="sah">Саха сирин арҕаа-соҕуруу эниэлэрэ уонна хочолоро; Ленск улууһугар Каяндертан сэдэх.</span></dd></div>
+        </dl>
+        <div class="notes">
+          <div class="note"><h4><span class="ru">Как отличить</span><span class="sah">Хайдах араарыахха</span></h4><p><span class="ru">От лиственницы Каяндера — более крупными шишками с округлыми чешуями и длинной хвоей.</span><span class="sah">Каяндер тиититтэн — бөдөҥ туорахтарынан, төгүрүк хатырыктарынан уонна уһун иннэтинэн.</span></p></div>
+        </div>
+        <div class="fact"><h4><span class="ru">Знаете ли вы</span><span class="sah">Билэҕит дуо</span></h4><p><span class="ru">Единственное хвойное дерево Якутии, которое сбрасывает хвою на зиму. Так оно экономит воду и не ломается под тяжестью снега. Живёт до 400–500 лет.</span><span class="sah">Саха сирин соҕотох иннэлээх маһа — кыһын иннэтин түһэрэр. Онон ууну экономтайар уонна хаар ыйааһыныгар алдьаммат. 400–500 сыл олорор.</span></p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="m-larix-cajanderi" hidden aria-hidden="true">
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="h-larix-cajanderi" tabindex="-1">
+    <button class="modal__close" type="button" data-close aria-label="Закрыть">✕</button>
+    <div class="modal__grid">
+      <div class="gallery">
+        <div class="gallery__main"><img id="gm-larix-cajanderi" src="assets/img/larix-cajanderi-1.jpg" alt="Лиственница Каяндера"></div>
+        <div class="gallery__thumbs"><button type="button" data-src="assets/img/larix-cajanderi-1.jpg" data-cap-ru="Лиственница на берегу" data-cap-sah="Кытылга тиит" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Larix_gmelinii_Tabaga.jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Trevbus&lt;/a&gt; · CC0" class="is-active" aria-label="Фото 1">
+          <img src="assets/img/larix-cajanderi-1.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/larix-cajanderi-2.jpg" data-cap-ru="Шишка" data-cap-sah="Туорах" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Cone_of_Larix_gmelinii_var._Japonica_Pilger2.jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Kinori&lt;/a&gt; · CC0" class="" aria-label="Фото 2">
+          <img src="assets/img/larix-cajanderi-2.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/larix-cajanderi-3.jpg" data-cap-ru="Лиственничная тайга в Якутии" data-cap-sah="Саха сирин тииттээх тайҕата" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Larix_gmelinii_Neryungrinskiy_Rayon_1.jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Svetlana Ivanova&lt;/a&gt; · CC BY 3.0" class="" aria-label="Фото 3">
+          <img src="assets/img/larix-cajanderi-3.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/winter/w02.jpg" data-cap-ru="Лиственница без хвои среди сосен" data-cap-sah="Бэстэр ортолоругар иннэтэ түспүт тиит" data-credit="Фото: автор проекта" class="" aria-label="Фото 4">
+          <img src="assets/img/winter/w02.jpg" alt="" loading="lazy">
+        </button></div>
+        <p class="gallery__cap"><span class="ru">Лиственница на берегу</span><span class="sah">Кытылга тиит</span></p>
+        <p class="gallery__credit">Фото: <a href="https://commons.wikimedia.org/wiki/File:Larix_gmelinii_Tabaga.jpg" target="_blank" rel="noopener">Trevbus</a> · CC0</p>
+      </div>
+      <div class="modal__content">
+        <div class="modal__kicker"><span class="ru">Виды</span><span class="sah">Көрүҥнэр</span> · 06 / 07</div>
+        <h2 id="h-larix-cajanderi">Лиственница Каяндера</h2>
+        <div class="modal__names">
+          <span class="modal__sah">Каяндер тиитэ</span>
+          <span class="modal__lat">Larix cajanderi Mayr</span>
+        </div>
+        <div class="modal__alt"><span class="ru">Другое название: лиственница даурская</span><span class="sah">Атын аат: тиит</span></div>
+        
+        <p class="modal__desc"><span class="ru">Дерево 10–25 (30) м, часто с неправильной кроной и толстым стволом. Хвоя 1,5–3 см, в пучках по 15–30. Шишки мелкие, 1,5–2,5 см, с опушёнными чешуями. Самое морозостойкое дерево планеты: переносит −60 °C. Образует основную часть лесов Якутии, растёт на склонах, террасах и гарях.</span><span class="sah">Мас, 10–25 (30) м, салаата тэҥэ суох, умсаҕа модьу. Иннэтэ 1,5–3 см, 15–30-нуу бөлөх. Туорахтара кыра, 1,5–2,5 см, хатырыктара түүлээх. Сир шаарын саамай тымныыны тулуйар маһа: −60 °C тулуйар. Саха сирин ойуурдарын үксүн үөскэтэр, эниэлэргэ, тэрээһэлэргэ уонна буруйдарга үүнэр.</span></p>
+        <dl class="feats">
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16 16 4M9 16 16 9M4 11 9 6"/></svg><span class="ru">Хвоя</span><span class="sah">Иннэ</span></dt><dd><span class="ru">в пучках по 15–30, 1,5–3 см, мягкая</span><span class="sah">15–30-нуу бөлөх, 1,5–3 см, сымнаҕас</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3c4 4 5 9 5 12 0 3-2 5-5 5s-5-2-5-5c0-3 1-8 5-12Z"/><path d="M7 8h6M6 12h8M7 15h6"/></svg><span class="ru">Шишки</span><span class="sah">Туорахтар</span></dt><dd><span class="ru">1,5–2,5 см, мелкие, чешуи опушённые</span><span class="sah">1,5–2,5 см, кыра, хатырыктара түүлээх</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6c2-2 4 2 6 0s4 2 6 0M4 11c2-2 4 2 6 0s4 2 6 0M4 16c2-2 4 2 6 0s4 2 6 0"/></svg><span class="ru">Кора</span><span class="sah">Хатырык</span></dt><dd><span class="ru">тёмно-серая, толстая, глубоко трещиноватая</span><span class="sah">хараҥа бороҥ, модьу, дириҥ хайытыылаах</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18s6-5.5 6-10a6 6 0 1 0-12 0c0 4.5 6 10 6 10Z"/><circle cx="10" cy="8" r="2"/></svg><span class="ru">Где искать</span><span class="sah">Ханна көрдүөххэ</span></dt><dd><span class="ru">Повсеместно: склоны, террасы, гари, окраины болот; главная порода лесов района.</span><span class="sah">Барытыгар: эниэлэр, тэрээһэлэр, буруйдар, бадараан кырыылара; улуус ойуурдарын сүрүн маһа.</span></dd></div>
+        </dl>
+        <div class="notes">
+          <div class="note"><h4><span class="ru">Как отличить</span><span class="sah">Хайдах араарыахха</span></h4><p><span class="ru">От лиственницы сибирской — мелкими шишками (1,5–2,5 см) с опушёнными чешуями.</span><span class="sah">Сибиир тиититтэн — кыра туорахтарынан (1,5–2,5 см), түүлээх хатырыктарынан.</span></p></div>
+        </div>
+        <div class="fact"><h4><span class="ru">Знаете ли вы</span><span class="sah">Билэҕит дуо</span></h4><p><span class="ru">Древесина лиственницы тонет в воде и почти не гниёт — из неё строят дома и делают сваи. В Якутии это главное лесное дерево.</span><span class="sah">Тиит маһа ууга тимирэр уонна кэриҥэ сытыйбат — ол онон дьиэ туталлар уонна баҕана оҥороллор. Саха сиригэр бу сүрүн ойуур маһа.</span></p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="m-juniperus" hidden aria-hidden="true">
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="h-juniperus" tabindex="-1">
+    <button class="modal__close" type="button" data-close aria-label="Закрыть">✕</button>
+    <div class="modal__grid">
+      <div class="gallery">
+        <div class="gallery__main"><img id="gm-juniperus" src="assets/img/juniperus-1.jpg" alt="Можжевельник сибирский"></div>
+        <div class="gallery__thumbs"><button type="button" data-src="assets/img/juniperus-1.jpg" data-cap-ru="Стелющийся куст" data-cap-sah="Сиргэ сытар ыарҕа" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Juniperus_sibirica_(Siberian_juniper),_shrub_(SaatPilot).jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Steffen Bauer&lt;/a&gt; · CC BY 4.0" class="is-active" aria-label="Фото 1">
+          <img src="assets/img/juniperus-1.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/juniperus-2.jpg" data-cap-ru="Синие шишкоягоды" data-cap-sah="Хара-күөх шишкоягодалар" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Juniperus_communis_fruits_-_Keila.jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Ivar Leidus&lt;/a&gt; · CC BY-SA 4.0" class="" aria-label="Фото 2">
+          <img src="assets/img/juniperus-2.jpg" alt="" loading="lazy">
+        </button><button type="button" data-src="assets/img/juniperus-3.jpg" data-cap-ru="Зелёные шишкоягоды" data-cap-sah="Күөх шишкоягодалар" data-credit="Фото: &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Juniperus_sibirica_(Siberian_juniper),_cones_(SaatPilot).jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Steffen Bauer&lt;/a&gt; · CC BY 4.0" class="" aria-label="Фото 3">
+          <img src="assets/img/juniperus-3.jpg" alt="" loading="lazy">
+        </button></div>
+        <p class="gallery__cap"><span class="ru">Стелющийся куст</span><span class="sah">Сиргэ сытар ыарҕа</span></p>
+        <p class="gallery__credit">Фото: <a href="https://commons.wikimedia.org/wiki/File:Juniperus_sibirica_(Siberian_juniper),_shrub_(SaatPilot).jpg" target="_blank" rel="noopener">Steffen Bauer</a> · CC BY 4.0</p>
+      </div>
+      <div class="modal__content">
+        <div class="modal__kicker"><span class="ru">Виды</span><span class="sah">Көрүҥнэр</span> · 07 / 07</div>
+        <h2 id="h-juniperus">Можжевельник сибирский</h2>
+        <div class="modal__names">
+          <span class="modal__sah">Сибиир кытыана</span>
+          <span class="modal__lat">Juniperus sibirica Burgsd.</span>
+        </div>
+        <div class="modal__alt"><span class="ru">Другое название: можжевельник</span><span class="sah">Атын аат: кытыан</span></div>
+        
+        <p class="modal__desc"><span class="ru">Стелющийся кустарник 0,3–1,5 м, иногда приподнимающийся. Хвоя игловидная, 0,5–1,5 см, в мутовках по три, колючая, с белой полоской сверху. Шишкоягоды 6–9 мм, сине-чёрные с восковым налётом, созревают два года. Растёт на каменистых склонах, скалах и опушках лиственничников.</span><span class="sah">Сиргэ сытар ыарҕа, 0,3–1,5 м, сороҕор үөһэ көтөҕүллэр. Иннэтэ иннэ курдук, 0,5–1,5 см, үстүү мутовкаҕа, хатыылаах, үөһэ өттүгэр үрүҥ полоскалаах. Шишкоягодалара 6–9 мм, хара-күөх, воскуннаах, икки сыл иһигэр ситэллэр. Таастаах эниэлэргэ, таастарга уонна тиит ойуур кырыыларыгар үүнэр.</span></p>
+        <dl class="feats">
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16 16 4M9 16 16 9M4 11 9 6"/></svg><span class="ru">Хвоя</span><span class="sah">Иннэ</span></dt><dd><span class="ru">игловидная, 0,5–1,5 см, в мутовках по три, колючая</span><span class="sah">иннэ курдук, 0,5–1,5 см, үстүү мутовкаҕа, хатыылаах</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3c4 4 5 9 5 12 0 3-2 5-5 5s-5-2-5-5c0-3 1-8 5-12Z"/><path d="M7 8h6M6 12h8M7 15h6"/></svg><span class="ru">Шишки</span><span class="sah">Туорахтар</span></dt><dd><span class="ru">шишкоягоды 6–9 мм, сине-чёрные, созревают два года</span><span class="sah">шишкоягодалар 6–9 мм, хара-күөх, икки сылга ситэллэр</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6c2-2 4 2 6 0s4 2 6 0M4 11c2-2 4 2 6 0s4 2 6 0M4 16c2-2 4 2 6 0s4 2 6 0"/></svg><span class="ru">Кора</span><span class="sah">Хатырык</span></dt><dd><span class="ru">бурая, чешуйчатая</span><span class="sah">кытархай-бороҥ, хатырыктаах</span></dd></div>
+          <div class="feat"><dt><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18s6-5.5 6-10a6 6 0 1 0-12 0c0 4.5 6 10 6 10Z"/><circle cx="10" cy="8" r="2"/></svg><span class="ru">Где искать</span><span class="sah">Ханна көрдүөххэ</span></dt><dd><span class="ru">Каменистые склоны, скалы, опушки лиственничников.</span><span class="sah">Таастаах эниэлэр, таастар, тиит ойуур кырыылара.</span></dd></div>
+        </dl>
+        <div class="notes">
+          <div class="note"><h4><span class="ru">Как отличить</span><span class="sah">Хайдах араарыахха</span></h4><p><span class="ru">От других хвойных — стелющейся формой, мутовками по три и синими шишкоягодами.</span><span class="sah">Атын иннэлээх мастартан — сиргэ сытар форматынан, үстүү мутовкатынан уонна хара-күөх шишкоягодаларынан.</span></p></div>
+        </div>
+        <div class="fact"><h4><span class="ru">Знаете ли вы</span><span class="sah">Билэҕит дуо</span></h4><p><span class="ru">Можжевельник — двудомное растение: на одних кустах только «мужские» шишки, на других — ягоды. Смолистый запах отпугивает насекомых.</span><span class="sah">Кытыан — икки дьиэлээх үүнээйи: сорох ыарҕаҕа эрэ «эр» туорахтар, атыттарга отоннор бааллар. Сыалаах сыта үөннэри үүрэр.</span></p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+window.__SPECIES__ = [{"id": "picea", "ru": "Ель сибирская", "sah": "Сибиир харыйата", "img": "assets/img/picea-1.jpg"}, {"id": "pinus-sylvestris", "ru": "Сосна обыкновенная", "sah": "Көннөрү бэс", "img": "assets/img/pinus-sylvestris-1.jpg"}, {"id": "abies", "ru": "Пихта сибирская", "sah": "Сибиир ыылааҕа", "img": "assets/img/abies-1.jpg"}, {"id": "pinus-sibirica", "ru": "Сосна сибирская", "sah": "Сибиир бэһэ", "img": "assets/img/pinus-sibirica-1.jpg"}, {"id": "larix-sibirica", "ru": "Лиственница сибирская", "sah": "Сибиир тиитэ", "img": "assets/img/larix-sibirica-1.jpg"}, {"id": "larix-cajanderi", "ru": "Лиственница Каяндера", "sah": "Каяндер тиитэ", "img": "assets/img/larix-cajanderi-1.jpg"}, {"id": "juniperus", "ru": "Можжевельник сибирский", "sah": "Сибиир кытыана", "img": "assets/img/juniperus-1.jpg"}];
+window.__I18N__ = {"quiz_q": ["Что это за дерево?", "Бу туох мас буолуой?"], "quiz_right": ["Верно!", "Сөп!"], "quiz_wrong": ["Не угадали. Это", "Сатаммата. Бу —"], "quiz_next": ["Дальше", "Аны"], "quiz_again": ["Ещё раз", "Өссө"], "quiz_score": ["Правильно", "Сөп"], "quiz_of": ["из", "ол"], "key_step": ["Шаг", "Хардыы"], "key_of": ["из", "ол"], "key_result_label": ["Результат", "Түмүк"]};
+</script>
+<script>(function () {
+  "use strict";
+  var body = document.body;
+  var SPECIES = window.__SPECIES__ || [];
+  var I18N = window.__I18N__ || {};
+  var PARAMS = new URLSearchParams(location.search);
+  var quizState = { started: false, rounds: [], i: 0, score: 0, answered: false, finished: false };
+  var updateKeyLabel = function () {};
+  var byId = {};
+  SPECIES.forEach(function (s) { byId[s.id] = s; });
+
+  function lang() { return body.getAttribute("data-lang") === "sah" ? "sah" : "ru"; }
+  function L(pair) { return Array.isArray(pair) ? (lang() === "sah" ? pair[1] : pair[0]) : pair; }
+  function imgSrc(path) {
+    var map = window.__IMG__;
+    if (!map) return path;
+    var name = String(path).split("/").pop();
+    return map[name] || path;
+  }
+
+  /* ---------- язык ---------- */
+  var langButtons = Array.prototype.slice.call(document.querySelectorAll(".lang button"));
+  function setLang(next, save) {
+    body.setAttribute("data-lang", next);
+    document.documentElement.lang = next === "sah" ? "sah" : "ru";
+    langButtons.forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === next));
+    });
+    if (save !== false) {
+      try { localStorage.setItem("taiga-lang", next); } catch (e) {}
+    }
+    updateKeyLabel();
+    if (quizState.started) renderRound();
+  }
+  langButtons.forEach(function (b) {
+    b.addEventListener("click", function () { setLang(b.getAttribute("data-lang")); });
+  });
+  try {
+    var saved = localStorage.getItem("taiga-lang");
+    var initial = PARAMS.get("lang") || saved;
+    if (initial === "sah") setLang("sah", false);
+  } catch (e) {}
+
+  /* ---------- шапка ---------- */
+  var topbar = document.getElementById("topbar");
+  var burger = document.getElementById("burger");
+  function onScroll() {
+    if (window.scrollY > 40) topbar.classList.add("is-stuck");
+    else topbar.classList.remove("is-stuck");
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  if (burger) {
+    burger.addEventListener("click", function () {
+      var open = body.classList.toggle("menu-open");
+      burger.setAttribute("aria-expanded", String(open));
+    });
+    document.querySelectorAll(".nav a").forEach(function (a) {
+      a.addEventListener("click", function () {
+        body.classList.remove("menu-open");
+        burger.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+
+  /* ---------- модальные окна ---------- */
+  var lastFocus = null;
+  function openModal(id, push) {
+    var m = document.getElementById("m-" + id);
+    if (!m) return;
+    lastFocus = document.activeElement;
+    m.hidden = false;
+    m.setAttribute("aria-hidden", "false");
+    requestAnimationFrame(function () { m.classList.add("is-open"); });
+    body.classList.add("is-locked");
+    var panel = m.querySelector(".modal__panel");
+    if (panel) setTimeout(function () { panel.focus({ preventScroll: true }); }, 60);
+    if (push !== false) {
+      try { history.replaceState(null, "", "#" + id); } catch (e) {}
+    }
+  }
+  function closeModal(m) {
+    m.classList.remove("is-open");
+    m.setAttribute("aria-hidden", "true");
+    body.classList.remove("is-locked");
+    setTimeout(function () { m.hidden = true; }, 260);
+    try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+    if (lastFocus) { lastFocus.focus({ preventScroll: true }); lastFocus = null; }
+  }
+  document.addEventListener("click", function (e) {
+    var opener = e.target.closest("[data-open]");
+    if (opener) {
+      e.preventDefault();
+      openModal(opener.getAttribute("data-open"));
+      return;
+    }
+    var closer = e.target.closest("[data-close]");
+    if (closer) {
+      var m = closer.closest(".modal");
+      if (m) closeModal(m);
+    }
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      var open = document.querySelector(".modal.is-open");
+      if (open) closeModal(open);
+      body.classList.remove("menu-open");
+    }
+  });
+  document.querySelectorAll(".map-pin").forEach(function (pin) {
+    pin.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openModal(pin.getAttribute("data-open"));
+      }
+    });
+  });
+
+  /* галерея */
+  document.querySelectorAll(".modal").forEach(function (m) {
+    var main = m.querySelector(".gallery__main img");
+    var cap = m.querySelector(".gallery__cap");
+    var cred = m.querySelector(".gallery__credit");
+    m.querySelectorAll(".gallery__thumbs button").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        m.querySelectorAll(".gallery__thumbs button").forEach(function (b) { b.classList.remove("is-active"); });
+        btn.classList.add("is-active");
+        main.src = btn.getAttribute("data-src");
+        main.alt = btn.getAttribute("data-cap-ru");
+        cap.innerHTML = '<span class="ru">' + btn.getAttribute("data-cap-ru") + '</span><span class="sah">' + btn.getAttribute("data-cap-sah") + '</span>';
+        cred.innerHTML = btn.getAttribute("data-credit");
+      });
+    });
+  });
+
+  /* ---------- определитель ---------- */
+  var keycard = document.getElementById("keycard");
+  if (keycard) {
+    var steps = Array.prototype.slice.call(keycard.querySelectorAll(".key__step"));
+    var trailBox = document.getElementById("keyTrail");
+    var backBtn = document.getElementById("keyBack");
+    var resetBtn = document.getElementById("keyReset");
+    var label = document.getElementById("keyStepLabel");
+    var history = [];
+    var current = "start";
+    var flow = "needle";
+    var FLOWS = { needle: { start: "start", total: 3 }, bark: { start: "b-start", total: 3 } };
+
+    var stepById = {};
+    steps.forEach(function (s) { stepById[s.getAttribute("data-step")] = s; });
+
+    updateKeyLabel = function () {
+      if (!label) return;
+      var el = stepById[current];
+      if (el && el.getAttribute("data-kind") === "result") {
+        label.textContent = L(I18N.key_result_label);
+        return;
+      }
+      var depth = el ? Number(el.getAttribute("data-depth")) : 1;
+      var total = FLOWS[flow].total;
+      label.textContent = L(I18N.key_step) + " " + Math.min(depth, total) + " " + L(I18N.key_of) + " " + total;
+    };
+
+    function show(id, push) {
+      var next = stepById[id];
+      if (!next) return;
+      steps.forEach(function (s) { s.classList.remove("is-active"); });
+      next.classList.add("is-active");
+      current = id;
+      if (push !== false) history.push(id);
+      backBtn.disabled = history.length < 2;
+      updateKeyLabel();
+      if (trailBox) {
+        trailBox.innerHTML = "";
+        history.slice(0, -1).forEach(function (hid) {
+          var st = stepById[hid];
+          if (!st || st.getAttribute("data-kind") !== "question") return;
+          var chip = document.createElement("span");
+          chip.textContent = st.getAttribute("data-choice-" + lang()) || st.getAttribute("data-choice-ru") || "";
+          trailBox.appendChild(chip);
+        });
+      }
+      if (next.getAttribute("data-kind") === "result" && window.innerWidth < 860) {
+        var top = keycard.getBoundingClientRect().top + window.scrollY - 90;
+        window.scrollTo({ top: top, behavior: "smooth" });
+      }
+    }
+
+    function setFlow(id) {
+      if (!FLOWS[id]) return;
+      flow = id;
+      document.querySelectorAll(".key__tab").forEach(function (b) {
+        var on = b.getAttribute("data-flow") === id;
+        b.classList.toggle("is-active", on);
+        b.setAttribute("aria-selected", String(on));
+      });
+      history = [];
+      show(FLOWS[flow].start);
+    }
+
+    keycard.addEventListener("click", function (e) {
+      var opt = e.target.closest(".opt");
+      if (!opt || !keycard.contains(opt)) return;
+      var step = opt.closest(".key__step");
+      if (!step) return;
+      var txt = opt.querySelector(".opt__txt b");
+      if (txt) {
+        step.setAttribute("data-choice-ru", opt.getAttribute("data-label-ru"));
+        step.setAttribute("data-choice-sah", opt.getAttribute("data-label-sah"));
+      }
+      show(opt.getAttribute("data-next"));
+    });
+
+    backBtn.addEventListener("click", function () {
+      if (history.length < 2) return;
+      history.pop();
+      var prev = history[history.length - 1];
+      history.pop();
+      show(prev);
+    });
+    resetBtn.addEventListener("click", function () {
+      history = [];
+      show(FLOWS[flow].start);
+    });
+    document.querySelectorAll(".key__tab").forEach(function (btn) {
+      btn.addEventListener("click", function () { setFlow(btn.getAttribute("data-flow")); });
+    });
+    var goStep = PARAMS.get("go");
+    if (goStep && stepById[goStep]) show(goStep);
+    updateKeyLabel();
+  }
+
+  /* ---------- викторина ---------- */
+  var quiz = {
+    img: document.getElementById("quizImg"),
+    score: document.getElementById("quizScore"),
+    title: document.getElementById("quizTitle"),
+    num: document.getElementById("quizNum"),
+    opts: document.getElementById("quizOpts"),
+    feedback: document.getElementById("quizFeedback"),
+    next: document.getElementById("quizNext"),
+    again: document.getElementById("quizAgain"),
+    progress: document.getElementById("quizProgress"),
+  };
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function startQuiz() {
+    var pool = shuffle(SPECIES).slice(0, 6);
+    quizState = { started: true, rounds: pool, i: 0, score: 0, answered: false, finished: false };
+    quiz.again.hidden = true;
+    renderRound();
+  }
+
+  function renderRound() {
+    if (!quizState.started) return;
+    var sp = quizState.rounds[quizState.i];
+    if (!sp || quizState.finished) { renderFinal(); return; }
+    quiz.img.src = imgSrc(sp.img);
+    quiz.img.alt = sp.ru;
+    quiz.title.textContent = L(I18N.quiz_q);
+    if (quiz.num) quiz.num.textContent = (lang() === "sah" ? "Ыйытыы" : "Вопрос") + " " + (quizState.i + 1) + " / " + quizState.rounds.length;
+    quiz.score.textContent = L(I18N.quiz_score) + ": " + quizState.score + " / " + quizState.rounds.length;
+
+    var others = shuffle(SPECIES.filter(function (s) { return s.id !== sp.id; })).slice(0, 3);
+    var options = shuffle(others.concat([sp]));
+    quiz.opts.innerHTML = "";
+    options.forEach(function (o) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "quiz__opt";
+      b.textContent = lang() === "sah" ? o.sah : o.ru;
+      b.addEventListener("click", function () { answer(o.id, b); });
+      quiz.opts.appendChild(b);
+    });
+    quiz.feedback.innerHTML = "";
+    quiz.next.hidden = true;
+    quiz.next.textContent = L(I18N.quiz_next);
+    quiz.again.hidden = true;
+    if (quizState.answered) markAnswered(sp);
+    renderProgress();
+  }
+
+  function markAnswered(sp) {
+    quiz.opts.querySelectorAll(".quiz__opt").forEach(function (b) {
+      b.disabled = true;
+      if (b.textContent === (lang() === "sah" ? sp.sah : sp.ru)) b.classList.add("is-right");
+    });
+    quiz.next.hidden = false;
+    quiz.next.textContent = L(I18N.quiz_next);
+  }
+
+  function answer(id, btn) {
+    if (quizState.answered) return;
+    quizState.answered = true;
+    var sp = quizState.rounds[quizState.i];
+    var correct = id === sp.id;
+    if (correct) quizState.score++;
+    quiz.opts.querySelectorAll(".quiz__opt").forEach(function (b) { b.disabled = true; });
+    btn.classList.add(correct ? "is-right" : "is-wrong");
+    if (!correct) {
+      quiz.opts.querySelectorAll(".quiz__opt").forEach(function (b) {
+        if (b.textContent === (lang() === "sah" ? sp.sah : sp.ru)) b.classList.add("is-right");
+      });
+    }
+    quiz.feedback.innerHTML = correct
+      ? "<b>" + L(I18N.quiz_right) + "</b> " + (lang() === "sah" ? sp.sah : sp.ru)
+      : L(I18N.quiz_wrong) + " <b>" + (lang() === "sah" ? sp.sah : sp.ru) + "</b>.";
+    quiz.next.hidden = false;
+    quiz.next.textContent = L(I18N.quiz_next);
+    quiz.score.textContent = L(I18N.quiz_score) + ": " + quizState.score + " / " + quizState.rounds.length;
+    renderProgress();
+  }
+
+  function renderProgress() {
+    quiz.progress.innerHTML = "";
+    for (var i = 0; i < quizState.rounds.length; i++) {
+      var d = document.createElement("i");
+      if (i < quizState.i || (i === quizState.i && quizState.answered)) d.className = "ok";
+      if (i === quizState.i && !quizState.answered) d.className = "on";
+      quiz.progress.appendChild(d);
+    }
+  }
+
+  function renderFinal() {
+    quizState.finished = true;
+    quiz.img.src = imgSrc("assets/img/larix-cajanderi-1.jpg");
+    quiz.img.alt = "";
+    quiz.title.textContent = L(I18N.quiz_score) + ": " + quizState.score + " " + L(I18N.quiz_of) + " " + quizState.rounds.length;
+    if (quiz.num) quiz.num.textContent = "";
+    quiz.opts.innerHTML = "";
+    quiz.feedback.innerHTML = quizState.score >= 5
+      ? (lang() === "sah" ? "Үчүгэй! Эн тайҕа мастарын билэҕин." : "Отлично! Вы хорошо знаете деревья тайги.")
+      : (lang() === "sah" ? "Сөпкө көрөн үөрэниэххэ сөп — карточкалары арыйан көр." : "Есть куда расти — откройте карточки видов и рассмотрите признаки.");
+    quiz.next.hidden = true;
+    quiz.again.hidden = false;
+    quiz.again.textContent = L(I18N.quiz_again);
+    renderProgress();
+  }
+
+  quiz.next.addEventListener("click", function () {
+    quizState.i++;
+    quizState.answered = false;
+    if (quizState.i >= quizState.rounds.length) renderFinal();
+    else renderRound();
+  });
+  quiz.again.addEventListener("click", startQuiz);
+  if (quiz.img) startQuiz();
+
+  /* ---------- глубокие ссылки ---------- */
+  function fromHash() {
+    var id = (location.hash || "").replace("#", "");
+    if (id && byId[id]) openModal(id, false);
+  }
+  window.addEventListener("hashchange", function () {
+    var id = (location.hash || "").replace("#", "");
+    if (id && byId[id]) openModal(id, false);
+  });
+  fromHash();
+})();
+</script>
+</body>
+</html>
